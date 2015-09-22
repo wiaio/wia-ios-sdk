@@ -1,0 +1,20 @@
+PODS:
+  - Expecta (1.0.3)
+  - Specta (1.0.4)
+  - Wia (0.1.0)
+
+DEPENDENCIES:
+  - Expecta
+  - Specta
+  - Wia (from `../`)
+
+EXTERNAL SOURCES:
+  Wia:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
+  Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
+  Wia: db5eeb35e7258e43fd0f8c1c054d35fb02481dfa
+
+COCOAPODS: 0.38.2

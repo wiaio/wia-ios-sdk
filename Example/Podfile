@@ -1,0 +1,13 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'Wia_Example', :exclusive => true do
+  pod "Wia", :path => "../"
+end
+
+target 'Wia_Tests', :exclusive => true do
+  pod "Wia", :path => "../"
+
+  pod 'Specta'
+  pod 'Expecta'
+end

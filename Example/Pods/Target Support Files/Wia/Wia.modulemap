@@ -1,0 +1,6 @@
+framework module Wia {
+  umbrella header "Wia-umbrella.h"
+
+  export *
+  module * { export * }
+}
