@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C4670C6779D8F120C109191 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B363E5AB3BE7033B8E370198 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -61,6 +62,7 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		920B545A1D31FA895447C9A2 /* Wia.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Wia.podspec; path = ../Wia.podspec; sourceTree = "<group>"; };
 		AD5C199506265C46CF1DA53C /* Pods-Wia_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wia_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wia_Tests/Pods-Wia_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		B363E5AB3BE7033B8E370198 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC56DE98B9C7CECCE10FE600 /* Pods-Wia_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wia_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wia_Example/Pods-Wia_Example.release.xcconfig"; sourceTree = "<group>"; };
 		E089A0C35321498E33D6E1D2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E1D10EB7E8C13786D6852CD9 /* Pods_Wia_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wia_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +78,7 @@
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
 				B890D78C2C6D4DB49986AA4D /* Pods_Wia_Example.framework in Frameworks */,
+				1C4670C6779D8F120C109191 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +137,7 @@
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				E1D10EB7E8C13786D6852CD9 /* Pods_Wia_Example.framework */,
 				E3D087F27D1891FC92A69656 /* Pods_Wia_Tests.framework */,
+				B363E5AB3BE7033B8E370198 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -244,8 +248,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Wia;
-				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = "Conall Laverty";
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Wia;
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -335,7 +339,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Wia_Example/Pods-Wia_Example-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		82B9D819A04CCC67CBC1E443 /* Check Pods Manifest.lock */ = {
@@ -452,6 +456,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -516,6 +521,7 @@
 				GCC_PREFIX_HEADER = "Wia/Wia-Prefix.pch";
 				INFOPLIST_FILE = "Wia/Wia-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -531,6 +537,7 @@
 				GCC_PREFIX_HEADER = "Wia/Wia-Prefix.pch";
 				INFOPLIST_FILE = "Wia/Wia-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -553,6 +560,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wia_Example.app/Wia_Example";
 				WRAPPER_EXTENSION = xctest;
@@ -572,6 +580,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wia_Example.app/Wia_Example";
 				WRAPPER_EXTENSION = xctest;

@@ -1,9 +1,32 @@
 PODS:
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - Expecta (1.0.3)
   - Specta (1.0.4)
-  - Wia (0.1.0)
+  - Wia (0.1.0):
+    - AFNetworking (~> 2.3)
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.6)
   - Expecta
   - Specta
   - Wia (from `../`)
@@ -13,8 +36,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
   Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
-  Wia: db5eeb35e7258e43fd0f8c1c054d35fb02481dfa
+  Wia: 977fde288320bd93934cccb7a59816d968f2fc36
 
 COCOAPODS: 0.38.2

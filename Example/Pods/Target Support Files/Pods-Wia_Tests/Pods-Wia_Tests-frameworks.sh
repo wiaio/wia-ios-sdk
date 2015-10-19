@@ -52,11 +52,13 @@ code_sign_if_enabled() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework 'Pods-Wia_Tests/AFNetworking.framework'
   install_framework 'Pods-Wia_Tests/Wia.framework'
   install_framework 'Pods-Wia_Tests/Expecta.framework'
   install_framework 'Pods-Wia_Tests/Specta.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework 'Pods-Wia_Tests/AFNetworking.framework'
   install_framework 'Pods-Wia_Tests/Wia.framework'
   install_framework 'Pods-Wia_Tests/Expecta.framework'
   install_framework 'Pods-Wia_Tests/Specta.framework'

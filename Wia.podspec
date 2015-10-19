@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   s.public_header_files = 'Wia/*.h'
   s.source_files = 'Wia/*.{h,m}'
 
+  s.dependency 'AFNetworking', '~> 2.3'
+
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

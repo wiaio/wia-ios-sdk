@@ -1,25 +1,27 @@
 {
   "name": "Wia",
   "version": "0.1.0",
-  "summary": "A short description of Wia.",
-  "description": "",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/Wia",
+  "summary": "Client SDK for Wia. Infrastructure for IoT.",
+  "description": "Client SDK for Wia to allow users to build applications around the platform. We provide infrastructure for IoT.",
+  "homepage": "https://www.wia.io",
   "license": "MIT",
   "authors": {
-    "Conall Laverty": "conall.laverty@gmail.com"
+    "Wia Team": "support@wia.io"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/Wia.git",
+    "git": "https://github.com/wiaio/wia-ios-sdk.git",
     "tag": "0.1.0"
   },
+  "social_media_url": "https://twitter.com/wiaio",
   "platforms": {
     "ios": "7.0"
   },
   "requires_arc": true,
-  "source_files": "Pod/Classes/**/*",
-  "resource_bundles": {
-    "Wia": [
-      "Pod/Assets/*.png"
+  "public_header_files": "Wia/*.h",
+  "source_files": "Wia/*.{h,m}",
+  "dependencies": {
+    "AFNetworking": [
+      "~> 2.3"
     ]
   }
 }
