@@ -10,6 +10,7 @@
 #import "WiaDevice.h"
 #import "WiaEvent.h"
 #import "WiaCommand.h"
+#import "WiaUser.h"
 
 @interface WiaUserClient : WiaClient
 
@@ -32,6 +33,9 @@
                 failure:(void (^)(NSError *error))failure;
 -(void)listDeviceEvents:(NSString *)deviceKey limit:(NSUInteger)limit page:(NSUInteger)page success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure;
+-(void)listDeviceEvents:(NSString *)deviceKey limit:(NSUInteger)limit page:(NSUInteger)page eventName:(NSString *)eventName
+                success:(void (^)(NSArray *events))success
+                failure:(void (^)(NSError *error))failure;
 
 -(void)listDeviceCommands:(NSString *)deviceKey success:(void (^)(NSArray *commands))success
                 failure:(void (^)(NSError *error))failure;
@@ -46,10 +50,15 @@
                 failure:(void (^)(NSError *error))failure;
 -(void)listEvents:(NSUInteger)limit page:(NSUInteger)page success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure;
+-(void)listEvents:(NSUInteger)limit page:(NSUInteger)page eventName:(NSString *)eventName success:(void (^)(NSArray *events))success
+                failure:(void (^)(NSError *error))failure;
 
 -(void)runCommand:(NSString *)deviceKey commandName:(NSString *)commandName success:(void (^)(NSObject *obj))success
           failure:(void (^)(NSError *error))failure;
 -(void)runCommand:(NSString *)deviceKey commandName:(NSString *)commandName commandData:(NSDictionary *)commandData success:(void (^)(NSObject *obj))success
           failure:(void (^)(NSError *error))failure;
+
+-(void)getUserMe:(void (^)(WiaUser *user))success
+            failure:(void (^)(NSError *error))failure;
 
 @end

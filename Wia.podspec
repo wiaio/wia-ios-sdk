@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Wia"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "Client SDK for Wia. Infrastructure for IoT."
 
   s.description      = "Client SDK for Wia to allow users to build applications around the platform. We provide infrastructure for IoT."

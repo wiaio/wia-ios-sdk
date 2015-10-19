@@ -96,15 +96,21 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
 
 -(void)listDeviceEvents:(NSString *)deviceKey success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
-    [self listDeviceEvents:deviceKey limit:DEFAULT_LIST_LIMIT page:DEFAULT_LIST_PAGE success:success failure:failure];
+    [self listDeviceEvents:deviceKey limit:DEFAULT_LIST_LIMIT page:DEFAULT_LIST_PAGE eventName:nil success:success failure:failure];
 }
 
 -(void)listDeviceEvents:(NSString *)deviceKey limit:(NSUInteger)limit success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
-    [self listDeviceEvents:deviceKey limit:limit page:DEFAULT_LIST_PAGE success:success failure:failure];
+    [self listDeviceEvents:deviceKey limit:limit page:DEFAULT_LIST_PAGE eventName:nil success:success failure:failure];
 }
 
 -(void)listDeviceEvents:(NSString *)deviceKey limit:(NSUInteger)limit page:(NSUInteger)page success:(void (^)(NSArray *events))success
+                failure:(void (^)(NSError *error))failure {
+
+}
+
+-(void)listDeviceEvents:(NSString *)deviceKey limit:(NSUInteger)limit page:(NSUInteger)page eventName:(NSString *)eventName
+                success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -114,6 +120,9 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInteger:limit] forKey:@"limit"];
     [dict setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
+    if (eventName) {
+        [dict setObject:eventName forKey:@"name"];
+    }
     
     [manager GET:[NSString stringWithFormat:@"https://api.wia.io/v1/devices/%@/events", deviceKey] parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
@@ -172,16 +181,22 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
 
 -(void)listEvents:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
-    [self listEvents:DEFAULT_LIST_LIMIT page:DEFAULT_LIST_PAGE success:success failure:failure];
+    [self listEvents:DEFAULT_LIST_LIMIT page:DEFAULT_LIST_PAGE eventName:nil success:success failure:failure];
 }
 
 -(void)listEvents:(NSUInteger)limit success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
-    [self listEvents:limit page:DEFAULT_LIST_PAGE success:success failure:failure];
+    [self listEvents:limit page:DEFAULT_LIST_PAGE eventName:nil success:success failure:failure];
 }
 
 -(void)listEvents:(NSUInteger)limit page:(NSUInteger)page success:(void (^)(NSArray *events))success
                 failure:(void (^)(NSError *error))failure {
+    [self listEvents:limit page:page eventName:nil success:success failure:failure];
+}
+
+-(void)listEvents:(NSUInteger)limit page:(NSUInteger)page eventName:(NSString *)eventName
+          success:(void (^)(NSArray *events))success
+          failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -190,6 +205,10 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInteger:limit] forKey:@"limit"];
     [dict setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
+    
+    if (eventName) {
+        [dict setObject:eventName forKey:@"name"];
+    }
     
     [manager GET:[NSString stringWithFormat:@"https://api.wia.io/v1/events"] parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
@@ -237,5 +256,26 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
            }
        }];
 }
+
+
+-(void)getUserMe:(void (^)(WiaUser *user))success
+            failure:(void (^)(NSError *error))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"https://api.wia.io/v1/users/me"] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaUser alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 @end
