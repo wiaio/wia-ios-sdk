@@ -14,6 +14,17 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
 
 @implementation WiaUserClient
 
++(instancetype)sharedInstance
+{
+    static WiaUserClient *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[WiaUserClient alloc] init];
+        // Do any other initialisation stuff here
+    });
+    return sharedInstance;
+}
+
 -(void)createDevice:(NSString *)name success:(void (^)(WiaDevice *device))success
             failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

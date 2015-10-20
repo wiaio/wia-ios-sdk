@@ -14,6 +14,8 @@
 
 @interface WiaUserClient : WiaClient
 
++(instancetype)sharedInstance;
+
 -(void)createDevice:(NSString *)name success:(void (^)(WiaDevice *device))success
             failure:(void (^)(NSError *error))failure;
 

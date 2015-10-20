@@ -18,10 +18,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+//    WiaUserClient *userClient = [[WiaUserClient alloc] initWithToken:@"userToken"];
+//    [userClient getUserMe:^(WiaUser *user) {
+//        NSLog(@"%@", user);
+//    } failure:^(NSError *error) {
+//        NSLog(@"%@", [error localizedDescription]);
+//    }];
     
-    WiaUserClient *userClient = [[WiaUserClient alloc] initWithToken:@"userToken"];
+    WiaUserClient *userClient = [[WiaUserClient sharedInstance] initWithToken:@"u_serToken"];
     [userClient getUserMe:^(WiaUser *user) {
         NSLog(@"%@", user);
+    } failure:^(NSError *error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }];
+    
+    [[WiaUserClient sharedInstance] listDevices:^(NSArray *devices) {
+        NSLog(@"%@", devices);
     } failure:^(NSError *error) {
         NSLog(@"%@", [error localizedDescription]);
     }];
