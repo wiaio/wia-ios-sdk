@@ -35,4 +35,20 @@
     return self;
 }
 
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] init];
+    
+    if (copy) {
+        [copy setName:self.name];
+        [copy setIsEnabled:self.isEnabled];
+        [copy setEnabledAt:self.enabledAt];
+        [copy setCreatedAt:self.createdAt];
+        [copy setUpdatedAt:self.updatedAt];
+    }
+    
+    return copy;
+}
+
 @end

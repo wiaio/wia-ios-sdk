@@ -10,7 +10,7 @@
 
 @implementation WiaEvent
 
-@synthesize device, name, data, timestamp;
+@synthesize device, name, eventData, timestamp;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -19,13 +19,27 @@
             self.device = [[WiaDevice alloc] initWithDictionary:[dict objectForKey:@"device"]];
         }
         self.name = [dict objectForKey:@"name"];
-        self.data = [dict objectForKey:@"data"];
+        self.eventData = [dict objectForKey:@"data"];
         if ([dict objectForKey:@"timestamp"]) {
             NSTimeInterval seconds = [[dict objectForKey:@"timestamp"] doubleValue] / 1000;
             self.timestamp =  [NSDate dateWithTimeIntervalSince1970:seconds];
         }
     }
     return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] init];
+    
+    if (copy) {
+        [copy setDevice:self.device];
+        [copy setName:self.name];
+        [copy setEventData:self.eventData];
+        [copy setTimestamp:self.timestamp];
+    }
+    
+    return copy;
 }
 
 @end

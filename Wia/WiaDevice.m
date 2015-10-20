@@ -32,5 +32,20 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] init];
+    
+    if (copy) {
+        [copy setDeviceKey:self.deviceKey];
+        [copy setName:self.name];
+        [copy setIsOnline:self.isOnline];
+        [copy setCreatedAt:self.createdAt];
+        [copy setUpdatedAt:self.updatedAt];
+    }
+    
+    return copy;
+}
+
 @end
 

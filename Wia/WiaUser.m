@@ -32,4 +32,21 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] init];
+    
+    if (copy) {
+        [copy setUserKey:self.userKey];
+        [copy setUsername:self.username];
+        [copy setFullName:self.fullName];
+        [copy setFirstName:self.firstName];
+        [copy setLastName:self.lastName];
+        [copy setCreatedAt:self.createdAt];
+        [copy setUpdatedAt:self.updatedAt];
+    }
+    
+    return copy;
+}
+
 @end

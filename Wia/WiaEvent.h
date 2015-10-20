@@ -14,7 +14,7 @@
 @property (nonatomic, nullable) WiaDevice *device;
 @property (nonatomic, copy, nullable) NSString *name;
 @property (nonatomic, copy, nullable) NSDate *timestamp;
-@property (nonatomic, copy, nullable) NSDictionary *data;
+@property (nonatomic, copy, nullable) NSDictionary *eventData;
 
 - (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dict;
 
