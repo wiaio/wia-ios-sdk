@@ -72,6 +72,8 @@
 		4A22D5511BD530EC00833CEF /* WiaCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A22D54F1BD530EC00833CEF /* WiaCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A22D5521BD530EC00833CEF /* WiaCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A22D5501BD530EC00833CEF /* WiaCommand.m */; settings = {ASSET_TAGS = (); }; };
 		4A47A406C7DED7962DDA5ECFBAE08A05 /* AFURLResponseSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 589FABF53921A41EF9823EA3A7A4F0F2 /* AFURLResponseSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A72A5F61BD7BCD70088E46D /* WiaUserToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A72A5F41BD7BCD70088E46D /* WiaUserToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A72A5F71BD7BCD70088E46D /* WiaUserToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A72A5F51BD7BCD70088E46D /* WiaUserToken.m */; settings = {ASSET_TAGS = (); }; };
 		507C887ED6BB345392F955EC6D528961 /* EXPUnsupportedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 41A7B25F7F42946C114A028CD6DA2A30 /* EXPUnsupportedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		54934CDD5BF21EB83DF09FE5F8D4BB0E /* UIButton+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B1D80E330DD0A1C9D6DE5EDF970EC69 /* UIButton+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5894411EB4178D8D8A46A430B2DE2265 /* EXPMatchers+beInstanceOf.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EA23E993AC6BB68086A8FEC8F0DF79 /* EXPMatchers+beInstanceOf.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -320,6 +322,8 @@
 		4A22D5491BD51E4100833CEF /* WiaEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaEvent.m; sourceTree = "<group>"; };
 		4A22D54F1BD530EC00833CEF /* WiaCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaCommand.h; sourceTree = "<group>"; };
 		4A22D5501BD530EC00833CEF /* WiaCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaCommand.m; sourceTree = "<group>"; };
+		4A72A5F41BD7BCD70088E46D /* WiaUserToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaUserToken.h; sourceTree = "<group>"; };
+		4A72A5F51BD7BCD70088E46D /* WiaUserToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaUserToken.m; sourceTree = "<group>"; };
 		4AB34068A63FC8CA7DEBE37FD9D1CEB7 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m"; sourceTree = "<group>"; };
 		4AD1B4CA1BB1992400256BC9 /* WiaUserClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WiaUserClient.h; sourceTree = "<group>"; };
 		4AD1B4CB1BB1995E00256BC9 /* WiaUserClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaUserClient.m; sourceTree = "<group>"; };
@@ -760,6 +764,8 @@
 				4A22D5491BD51E4100833CEF /* WiaEvent.m */,
 				4A22D54F1BD530EC00833CEF /* WiaCommand.h */,
 				4A22D5501BD530EC00833CEF /* WiaCommand.m */,
+				4A72A5F41BD7BCD70088E46D /* WiaUserToken.h */,
+				4A72A5F51BD7BCD70088E46D /* WiaUserToken.m */,
 			);
 			path = Wia;
 			sourceTree = "<group>";
@@ -1026,6 +1032,7 @@
 				4A22D54C1BD51EEF00833CEF /* WiaUserClient.h in Headers */,
 				1B5EE9D7A6CBC9ABA39EE55E6E2AD7E3 /* WiaClient.h in Headers */,
 				4A22D53F1BD51A7B00833CEF /* WiaDevice.h in Headers */,
+				4A72A5F61BD7BCD70088E46D /* WiaUserToken.h in Headers */,
 				4A22D5441BD51BD200833CEF /* Wia.h in Headers */,
 				4A22D5411BD51A7B00833CEF /* WiaUser.h in Headers */,
 			);
@@ -1279,6 +1286,7 @@
 			files = (
 				4A22D5521BD530EC00833CEF /* WiaCommand.m in Sources */,
 				4A22D5421BD51A7B00833CEF /* WiaUser.m in Sources */,
+				4A72A5F71BD7BCD70088E46D /* WiaUserToken.m in Sources */,
 				36EE227C56A09554589DCFB6C708B5B1 /* Wia-dummy.m in Sources */,
 				4A22D54B1BD51E4100833CEF /* WiaEvent.m in Sources */,
 				365186A546CB3AC9456E5DCB38BB4E62 /* WiaClient.m in Sources */,

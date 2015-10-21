@@ -268,7 +268,6 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
        }];
 }
 
-
 -(void)getUserMe:(void (^)(WiaUser *user))success
             failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -288,5 +287,34 @@ static NSUInteger const DEFAULT_LIST_PAGE = 0;
     }];
 }
 
+-(void)generateUserToken:(NSString *)username password:(NSString *)password
+                 success:(void (^)(WiaUserToken *userToken))success
+                 failure:(void (^)(NSError *error))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:username forKey:@"username"];
+    [dict setObject:password forKey:@"password"];
+    [dict setObject:@"password" forKey:@"grantType"];
+    
+    [manager POST:[NSString stringWithFormat:@"https://api.wia.io/v1/auth/token"]
+       parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           if (success) {
+               if (responseObject) {
+                   success([[WiaUserToken alloc] initWithDictionary:responseObject]);
+               } else {
+                   failure(nil);
+               }
+           }
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           NSLog(@"Error: %@", error);
+           if (failure) {
+               failure(error);
+           }
+       }];
+}
 
 @end

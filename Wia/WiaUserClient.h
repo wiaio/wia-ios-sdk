@@ -11,6 +11,7 @@
 #import "WiaEvent.h"
 #import "WiaCommand.h"
 #import "WiaUser.h"
+#import "WiaUserToken.h"
 
 @interface WiaUserClient : WiaClient
 
@@ -62,5 +63,9 @@
 
 -(void)getUserMe:(void (^)(WiaUser *user))success
             failure:(void (^)(NSError *error))failure;
+
+-(void)generateUserToken:(NSString *)username password:(NSString *)password
+                 success:(void (^)(WiaUserToken *userToken))success
+                 failure:(void (^)(NSError *error))failure;
 
 @end
