@@ -7,10 +7,11 @@
 //
 
 #import "WiaDevice.h"
+#import "WiaEvent.h"
 
 @implementation WiaDevice
 
-@synthesize deviceKey, name, isOnline, createdAt, updatedAt;
+@synthesize deviceKey, name, isOnline, createdAt, updatedAt, events;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -28,6 +29,29 @@
             NSTimeInterval seconds = [[dict objectForKey:@"updatedAt"] doubleValue] / 1000;
             self.updatedAt =  [NSDate dateWithTimeIntervalSince1970:seconds];
         }
+        if ([dict objectForKey:@"events"]) {
+            self.events = [[NSArray alloc] init];
+            
+            NSMutableArray *eventsArray = [[NSMutableArray alloc] init];
+            NSDictionary *eventsDict = [dict objectForKey:@"events"];
+            NSArray *arrayKeys = [eventsDict allKeys];
+            
+            for (NSString *k in arrayKeys) {
+                NSMutableDictionary *eventObj = [[eventsDict objectForKey:k] mutableCopy];
+                WiaEvent *e = [[WiaEvent alloc] init];
+                e.name = k;
+                
+                NSTimeInterval seconds = [[eventObj objectForKey:@"timestamp"] doubleValue] / 1000;
+                e.timestamp =  [NSDate dateWithTimeIntervalSince1970:seconds];
+                
+                [eventObj removeObjectForKey:@"timestamp"];
+                
+                e.eventData = eventObj;
+                
+                [eventsArray addObject:e];
+            }
+            self.events = [eventsArray copy];
+        }
     }
     return self;
 }
@@ -42,6 +66,7 @@
         [copy setIsOnline:self.isOnline];
         [copy setCreatedAt:self.createdAt];
         [copy setUpdatedAt:self.updatedAt];
+        [copy setEvents:self.events];
     }
     
     return copy;

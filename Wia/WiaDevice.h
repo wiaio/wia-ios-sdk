@@ -15,6 +15,7 @@
 @property (nonatomic) BOOL isOnline;
 @property (nonatomic, copy, nullable) NSDate *createdAt;
 @property (nonatomic, copy, nullable) NSDate *updatedAt;
+@property (nonatomic, copy, nullable) NSArray *events;
 
 - (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dict;
 
