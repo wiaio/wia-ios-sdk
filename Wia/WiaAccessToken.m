@@ -1,22 +1,25 @@
 //
-//  WiaUserToken.m
+//  WiaAccessToken.m
 //  Pods
 //
-//  Created by Conall Laverty on 21/10/2015.
+//  Created by Conall Laverty on 07/12/2015.
 //
 //
 
-#import "WiaUserToken.h"
+#import "WiaAccessToken.h"
 
-@implementation WiaUserToken
+@implementation WiaAccessToken
 
-@synthesize accessToken, tokenType;
+@synthesize accessToken, tokenType, expiresIn, refreshToken, scope;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
         self.accessToken = [dict objectForKey:@"accessToken"];
         self.tokenType = [dict objectForKey:@"tokenType"];
+        self.expiresIn = [dict objectForKey:@"expiresIn"];
+        self.refreshToken = [dict objectForKey:@"refreshToken"];
+        self.scope = [dict objectForKey:@"scope"];
     }
     return self;
 }
@@ -28,6 +31,9 @@
     if (copy) {
         [copy setAccessToken:self.accessToken];
         [copy setTokenType:self.tokenType];
+        [copy setExpiresIn:self.expiresIn];
+        [copy setRefreshToken:self.refreshToken];
+        [copy setScope:self.scope];
     }
     
     return copy;

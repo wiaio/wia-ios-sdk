@@ -1,2 +1,4 @@
-SPECTA_FRAMEWORK_SEARCH_PATHS = $(inherited) "$(SDKROOT)/Developer/Library/Frameworks" "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-SPECTA_OTHER_LDFLAGS = -framework "Foundation" -framework "XCTest"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Wia" "${PODS_ROOT}/Headers/Public"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

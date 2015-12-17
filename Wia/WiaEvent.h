@@ -12,9 +12,11 @@
 @interface WiaEvent : NSObject
 
 @property (nonatomic, nullable) WiaDevice *device;
+@property (nonatomic, copy, nullable) NSString *eventId;
+@property (nonatomic, copy, nullable) NSString *deviceKey;
 @property (nonatomic, copy, nullable) NSString *name;
 @property (nonatomic, copy, nullable) NSDate *timestamp;
-@property (nonatomic, copy, nullable) NSDictionary *eventData;
+@property (nonatomic, copy, nullable) NSObject *eventData;
 
 - (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dict;
 

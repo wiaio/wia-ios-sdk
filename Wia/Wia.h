@@ -6,7 +6,4 @@
 //
 //
 
-#import "WiaUserClient.h"
-#import "WiaDevice.h"
-#import "WiaUser.h"
-#import "WiaEvent.h"
+#import "WiaClient.h"

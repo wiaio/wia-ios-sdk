@@ -9,7 +9,7 @@
 #import "WiaViewController.h"
 #import "Wia.h"
 
-@interface WiaViewController ()
+@interface WiaViewController () <WiaClientDelegate>
 
 @end
 
@@ -19,25 +19,31 @@
 {
     [super viewDidLoad];
 
-//    WiaUserClient *userClient = [[WiaUserClient alloc] initWithToken:@"userToken"];
-//    [userClient getUserMe:^(WiaUser *user) {
-//        NSLog(@"%@", user);
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@", [error localizedDescription]);
-//    }];
+    WiaClient *wia = [[WiaClient sharedInstance] initWithToken:@"u_userToken"];
     
-    WiaUserClient *userClient = [[WiaUserClient sharedInstance] initWithToken:@"u_serToken"];
-    [userClient getUserMe:^(WiaUser *user) {
-        NSLog(@"%@", user);
-    } failure:^(NSError *error) {
-        NSLog(@"%@", [error localizedDescription]);
+    [wia setDelegate:self];
+    
+    [wia connectToStream:^{
+        NSLog(@"connectToStream - Success");
+    } failure:^(NSError * _Nullable error) {
+        NSLog(@"connectToStream - Failure");
     }];
     
-    [[WiaUserClient sharedInstance] listDevices:^(NSArray *devices) {
-        NSLog(@"%@", devices);
-    } failure:^(NSError *error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }];
+    [wia subscribeToLogs:@{
+                             @"deviceKey": @"device_deviceKey"
+                            }];
+}
+
+-(void)newEvent:(WiaEvent *)event {
+    NSLog(@"%@", event.name);
+    NSLog(@"%@", event.deviceKey);
+    NSLog(@"%@", event.eventData);
+    NSLog(@"%@", event.timestamp);
+}
+
+-(void)newLog:(WiaLog *)log {
+    NSLog(@"%@", log.level);
+    NSLog(@"%@", log.message);
 }
 
 - (void)didReceiveMemoryWarning

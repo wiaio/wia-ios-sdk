@@ -10,7 +10,7 @@
 
 @implementation WiaEvent
 
-@synthesize device, name, eventData, timestamp;
+@synthesize device, eventId, deviceKey, name, eventData, timestamp;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -18,6 +18,8 @@
         if ([dict objectForKey:@"device"]) {
             self.device = [[WiaDevice alloc] initWithDictionary:[dict objectForKey:@"device"]];
         }
+        self.eventId = [dict objectForKey:@"eventId"];
+        self.deviceKey = [dict objectForKey:@"deviceKey"];
         self.name = [dict objectForKey:@"name"];
         self.eventData = [dict objectForKey:@"data"];
         if ([dict objectForKey:@"timestamp"]) {
@@ -34,6 +36,8 @@
     
     if (copy) {
         [copy setDevice:self.device];
+        [copy setEventId:self.eventId];
+        [copy setDeviceKey:self.deviceKey];
         [copy setName:self.name];
         [copy setEventData:self.eventData];
         [copy setTimestamp:self.timestamp];

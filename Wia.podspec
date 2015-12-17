@@ -26,6 +26,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Wia/*.{h,m}'
 
   s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'MQTTClient', '~> 0.5'
 
   # s.frameworks = 'UIKit', 'MapKit'
 end
