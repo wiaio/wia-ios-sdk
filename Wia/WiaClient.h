@@ -65,10 +65,16 @@
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)subscribeToEvents:(nonnull NSDictionary *)params;
 -(void)unsubscribeFromEvents:(nonnull NSDictionary *)params;
+-(void)listEvents:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable events))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Logs
+-(void)publishLog:(nonnull NSDictionary *)log success:(nullable void (^)(WiaLog * _Nullable log))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)subscribeToLogs:(nonnull NSDictionary *)params;
 -(void)unsubscribeFromLogs:(nonnull NSDictionary *)params;
+-(void)listLogs:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable logs))success
+          failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Users
 -(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success
