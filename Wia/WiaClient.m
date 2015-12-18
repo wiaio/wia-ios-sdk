@@ -19,7 +19,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 @implementation WiaClient
 
-@synthesize delegate, clientToken, restApiURL, mqttApiURL, mqttSession;
+@synthesize delegate, clientToken, restApiURL, mqttApiURL, mqttSession, clientInfo;
 
 +(instancetype)sharedInstance
 {
@@ -34,6 +34,10 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 +(void)debug:(BOOL)showDebugLogs {
     WiaSetShowDebugLogs(showDebugLogs);
+}
+
+- (instancetype)init {
+    return [self initWithToken:self.clientToken];
 }
 
 - (instancetype)initWithToken:(NSString *)token {
@@ -63,6 +67,43 @@ static NSString *const mqttApiHost = @"api.wia.io";
 }
 
 // Events
+-(void)publishEvent:(nonnull NSDictionary *)event success:(nullable void (^)(WiaEvent * _Nullable event))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure {
+    WiaLogger(@"Publishing event - %@", event);
+
+    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected && self.clientInfo) {
+        WiaLogger(@"Publishing event on stream.");
+        NSDictionary *device = [self.clientInfo objectForKey:@"device"];
+        if (!device) {
+            WiaLogger(@"Cannot send event. Not a device.");
+            return;
+        }
+        NSString *deviceKey = [device objectForKey:@"deviceKey"];
+        if (!deviceKey) {
+            WiaLogger(@"Cannot send event. deviceKey not in client info.");
+            return;
+        }
+        WiaLogger(@"Sending event on stream with topic %@", [NSString stringWithFormat:@"devices/%@/events/%@", deviceKey, [event objectForKey:@"name"]]);
+        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:event] onTopic:[NSString stringWithFormat:@"devices/%@/events/%@", deviceKey, [event objectForKey:@"name"]] retain:YES qos:MQTTQosLevelAtLeastOnce];
+    } else {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:event success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (success) {
+                success([[WiaEvent alloc] initWithDictionary:responseObject]);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+            if (failure) {
+                failure(error);
+            }
+        }];
+    }
+}
+
 -(void)subscribeToEvents:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"deviceKey"]) {
         if ([params objectForKey:@"name"]) {
@@ -84,7 +125,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }
 }
 
-// Events
+// Logs
 -(void)subscribeToLogs:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"deviceKey"]) {
         if ([params objectForKey:@"level"]) {
@@ -119,7 +160,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success([[WiaDevice alloc] initWithDictionary:responseObject]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -137,7 +178,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success([[WiaDevice alloc] initWithDictionary:responseObject]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -155,7 +196,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success([[WiaDevice alloc] initWithDictionary:responseObject]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -173,7 +214,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success([[WiaDevice alloc] initWithDictionary:responseObject]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -197,7 +238,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success(devices);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -217,7 +258,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
             success([[WiaUser alloc] initWithDictionary:responseObject]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        WiaLogger(@"Error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -232,6 +273,8 @@ static NSString *const mqttApiHost = @"api.wia.io";
 // MQTTSessionDelegate
 - (void)connected:(MQTTSession *)session {
     WiaLogger(@"Connected to stream.");
+    [self.mqttSession subscribeTopic:@"whoami"];
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(connectedToStream)]) {
         [self.delegate connectedToStream];
     }
@@ -240,6 +283,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)connectionRefused:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Connection refused.");
+    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:error];
     }
@@ -248,6 +292,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)connectionClosed:(MQTTSession *)session {
     WiaLogger(@"Connection closed.");
+    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -256,6 +301,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)connectionError:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Connection error.");
+    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -264,6 +310,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)protocolError:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Protocol error.");
+    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -272,6 +319,13 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)newMessage:(MQTTSession *)session data:(NSData *)data onTopic:(NSString *)topic qos:(MQTTQosLevel)qos retained:(BOOL)retained mid:(unsigned int)mid {
     WiaLogger(@"New message received. topic - %@, data - %@", topic, data);
+    
+    if ([topic isEqualToString:@"whoami"]) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        WiaLogger(@"whoami - %@", dict);
+        self.clientInfo = dict;
+        return;
+    }
     
     NSRange searchedRange = NSMakeRange(0, [topic length]);
     NSError *error = nil;

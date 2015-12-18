@@ -28,9 +28,10 @@
 
 -(void)connectedToStream {
     NSLog(@"Connected to stream.");
-    [[WiaClient sharedInstance] subscribeToEvents:@{
-                                @"deviceKey": @"dev_deviceKey"
-                             }];
+}
+
+-(void)disconnectedFromStream:(NSError *)error {
+    NSLog(@"Disconnected from stream.");
 }
 
 -(void)newEvent:(WiaEvent *)event {
@@ -43,10 +44,6 @@
 -(void)newLog:(WiaLog *)log {
     NSLog(@"%@", log.level);
     NSLog(@"%@", log.message);
-}
-
--(void)disconnectedFromStream:(NSError *)error {
-    NSLog(@"Disconnected from stream.");
 }
 
 - (void)didReceiveMemoryWarning

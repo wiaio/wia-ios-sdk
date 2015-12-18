@@ -37,6 +37,8 @@
 @property (nonatomic, readwrite, nullable) NSURL *mqttApiURL;
 @property (nonatomic, strong, nullable) MQTTSession *mqttSession;
 
+@property (nonatomic, strong, nullable) NSDictionary *clientInfo;
+
 +(nonnull instancetype)sharedInstance;
 +(void)debug:(BOOL)showDebugLogs;
 
@@ -59,6 +61,8 @@
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Events
+-(void)publishEvent:(nonnull NSDictionary *)event success:(nullable void (^)(WiaEvent * _Nullable event))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)subscribeToEvents:(nonnull NSDictionary *)params;
 -(void)unsubscribeFromEvents:(nonnull NSDictionary *)params;
 
