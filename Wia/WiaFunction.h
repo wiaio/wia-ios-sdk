@@ -1,5 +1,5 @@
 //
-//  WiaCommand.h
+//  WiaFunction.h
 //  Pods
 //
 //  Created by Conall Laverty on 19/10/2015.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WiaCommand : NSObject
+@interface WiaFunction : NSObject
 
+@property (nonatomic, copy, nullable) NSString *deviceKey;
 @property (nonatomic, copy, nullable) NSString *name;
 @property (nonatomic) BOOL isEnabled;
 @property (nonatomic, copy, nullable) NSDate *enabledAt;

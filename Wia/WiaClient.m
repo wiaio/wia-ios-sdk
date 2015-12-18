@@ -44,8 +44,25 @@ static NSString *const mqttApiHost = @"api.wia.io";
     self = [super init];
     if (self) {
         self.clientToken = token;
+        [self getWiaClientInfo];
     }
     return self;
+}
+
+-(void)getWiaClientInfo {
+    if (self.clientToken) {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+        
+        [manager GET:[NSString stringWithFormat:@"%@/whoami", [self getRestApiEndpoint]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            WiaLogger(@"whoami - %@", responseObject);
+            self.clientInfo = responseObject;
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+        }];
+    }
 }
 
 // Stream
@@ -64,6 +81,104 @@ static NSString *const mqttApiHost = @"api.wia.io";
     if (self.mqttSession) {
         [self.mqttSession close];
     }
+}
+
+// Devices
+-(void)createDevice:(NSDictionary *)device success:(void (^)(WiaDevice *device))success
+            failure:(void (^)(NSError *error))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager POST:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:device success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaDevice alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+-(void)retrieveDevice:(NSString *)deviceKey success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaDevice alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+-(void)updateDevice:(NSString *)deviceKey fields:(NSDictionary *)fields success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager PUT:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:fields success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaDevice alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+-(void)deleteDevice:(NSString *)deviceKey success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager DELETE:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaDevice alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+-(void)listDevices:(NSDictionary *)params success:(void (^)(NSArray *devices))success
+           failure:(void (^)(NSError *error))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            NSMutableArray *devices = [[NSMutableArray alloc] init];
+            for (id device in [responseObject objectForKey:@"devices"]) {
+                WiaDevice *d = [[WiaDevice alloc] initWithDictionary:device];
+                [devices addObject:d];
+            }
+            success(devices);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 // Events
@@ -234,95 +349,22 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }];
 }
 
-// Devices
--(void)createDevice:(NSDictionary *)device success:(void (^)(WiaDevice *device))success
-            failure:(void (^)(NSError *error))failure {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
-    [manager POST:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:device success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success([[WiaDevice alloc] initWithDictionary:responseObject]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WiaLogger(@"Error: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
--(void)retrieveDevice:(NSString *)deviceKey success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
-    [manager GET:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success([[WiaDevice alloc] initWithDictionary:responseObject]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WiaLogger(@"Error: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
--(void)updateDevice:(NSString *)deviceKey fields:(NSDictionary *)fields success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
-    [manager PUT:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:fields success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success([[WiaDevice alloc] initWithDictionary:responseObject]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WiaLogger(@"Error: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
--(void)deleteDevice:(NSString *)deviceKey success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
-    [manager DELETE:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success([[WiaDevice alloc] initWithDictionary:responseObject]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WiaLogger(@"Error: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
--(void)listDevices:(NSDictionary *)params success:(void (^)(NSArray *devices))success
+// Functions
+-(void)listFunctions:(NSDictionary *)params success:(void (^)(NSArray *functions))success
            failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/functions", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            NSMutableArray *devices = [[NSMutableArray alloc] init];
-            for (id device in [responseObject objectForKey:@"devices"]) {
-                WiaDevice *d = [[WiaDevice alloc] initWithDictionary:device];
-                [devices addObject:d];
+            NSMutableArray *functions = [[NSMutableArray alloc] init];
+            for (id func in [responseObject objectForKey:@"functions"]) {
+                WiaFunction *f = [[WiaFunction alloc] initWithDictionary:func];
+                [functions addObject:f];
             }
-            success(devices);
+            success(functions);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WiaLogger(@"Error: %@", error);
@@ -332,6 +374,31 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }];
 }
 
+-(void)callFunction:(nullable NSDictionary *)params {
+    if (!params)
+        return;
+    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected) {
+        WiaLogger(@"Calling function over stream.");
+        NSString *topic = [NSString stringWithFormat:@"devices/%@/functions/%@/call", [params objectForKey:@"deviceKey"], [params objectForKey:@"name"]];
+        WiaLogger([NSString stringWithFormat:@"Publishing to topic %@", topic]);
+        WiaLogger(@"%@", params);
+        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:params] onTopic:topic retain:NO qos:MQTTQosLevelAtLeastOnce];
+    } else {
+        WiaLogger(@"Calling function over REST.");
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:[NSString stringWithFormat:@"%@/functions/call", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            WiaLogger(@"Success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+        }];
+    }
+}
+
+// Users
 -(void)getUserMe:(void (^)(WiaUser *user))success
          failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -359,8 +426,6 @@ static NSString *const mqttApiHost = @"api.wia.io";
 // MQTTSessionDelegate
 - (void)connected:(MQTTSession *)session {
     WiaLogger(@"Connected to stream.");
-    [self.mqttSession subscribeTopic:@"whoami"];
-    
     if (self.delegate && [self.delegate respondsToSelector:@selector(connectedToStream)]) {
         [self.delegate connectedToStream];
     }
@@ -405,14 +470,6 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 - (void)newMessage:(MQTTSession *)session data:(NSData *)data onTopic:(NSString *)topic qos:(MQTTQosLevel)qos retained:(BOOL)retained mid:(unsigned int)mid {
     WiaLogger(@"New message received. topic - %@, data - %@", topic, data);
-    
-    if ([topic isEqualToString:@"whoami"]) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        WiaLogger(@"whoami - %@", dict);
-        self.clientInfo = dict;
-        return;
-    }
-    
     NSRange searchedRange = NSMakeRange(0, [topic length]);
     NSError *error = nil;
     

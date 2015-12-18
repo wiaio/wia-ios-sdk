@@ -115,7 +115,7 @@
 		7A211860F672261C1522DCDF1FFC9ED0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF0A0CF37C4440853088DE9837AC304 /* XCTest.framework */; };
 		7B223B4E6EF14BA12DA113F7EE10B96C /* NSObject+Expecta.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C52A480CF489BD2BDA59DF341FC1426 /* NSObject+Expecta.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		805E425BBEF7A6133E32E1D30A073010 /* EXPExpect.m in Sources */ = {isa = PBXBuildFile; fileRef = 15292CDE50D3889400319624B359B239 /* EXPExpect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		820FFC4BC811D3CF54322FA86506704E /* WiaCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaCommand.m */; };
+		820FFC4BC811D3CF54322FA86506704E /* WiaFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaFunction.m */; };
 		829D2D075F6F18B08E0EF6B39184FEF2 /* WiaEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = F616E43BD7B0E3C69E3FDE89D539EB36 /* WiaEvent.m */; };
 		837B593D7C1D01B4EA400247309D6AB0 /* Expecta-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A0C0F6DEDE5DCF3972541357A8412B35 /* Expecta-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		848DC28D73780EE7970D402B48878213 /* SPTExampleGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7E278195557E0D116DD55074E5987D /* SPTExampleGroup.m */; };
@@ -150,7 +150,7 @@
 		BA12B131F10BCE3BE6E9A02FC908FE9D /* EXPMatchers+beCloseTo.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E053F6105C05621FE2A86E80F99E82 /* EXPMatchers+beCloseTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB82DC2891A35AC22DD6D5CE4CAE4364 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE1C39149EAA9CBF000DACFF8B6DED7 /* UIButton+AFNetworking.m */; };
 		BC55C8365AEFF8217F6A567607754854 /* EXPDoubleTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = B9B4EBAA08FC2CF357D4AFD814C094D6 /* EXPDoubleTuple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		BCF4FC427AACB031EF05BCE3D911A3F3 /* WiaCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B31A12072C86CA1A5EB781116B1A232 /* WiaCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BCF4FC427AACB031EF05BCE3D911A3F3 /* WiaFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B31A12072C86CA1A5EB781116B1A232 /* WiaFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEFFE9FFE52E9A0833A7D2D8FB67EB4D /* EXPMatchers+beSubclassOf.m in Sources */ = {isa = PBXBuildFile; fileRef = 22181E481A41E4C028443AD7F3628996 /* EXPMatchers+beSubclassOf.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BF81F249397B51F62F750FFCD8E89A49 /* WiaUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 294BF2A3A14D5F501D91A2398BEE8685 /* WiaUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C087B9B3A493BC8232CBA4DB1CB47A67 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BBEE92D8F485E2FF8F029C2E240CCAB /* AFNetworkReachabilityManager.m */; };
@@ -407,7 +407,7 @@
 		7A90288DD2A082F26E17743797029AFF /* NSValue+Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValue+Expecta.h"; path = "Expecta/NSValue+Expecta.h"; sourceTree = "<group>"; };
 		7BDC13B8FBD10D6C2AF7B760A14EED2F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		7BF3E26C960DBCC00CFAA2E52FDD4D1E /* Pods_Wia_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wia_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaCommand.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = WiaCommand.m; sourceTree = "<group>"; };
+		7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaFunction.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = WiaFunction.m; sourceTree = "<group>"; };
 		7ECBF858B2AC3C36AB5207F5A71FADBF /* MQTTClient.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MQTTClient.xcconfig; sourceTree = "<group>"; };
 		7EF03FEA5C9CE41207C74DE1AE73AE33 /* SPTExcludeGlobalBeforeAfterEach.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SPTExcludeGlobalBeforeAfterEach.h; path = Specta/Specta/SPTExcludeGlobalBeforeAfterEach.h; sourceTree = "<group>"; };
 		7FF0EF74EAFF1F115B511A00EF8ED075 /* EXPMatchers+beGreaterThan.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beGreaterThan.m"; path = "Expecta/Matchers/EXPMatchers+beGreaterThan.m"; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		860001F17AAEC08EE462EABF050180F5 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.h"; sourceTree = "<group>"; };
 		892F71EF3DE4136B694F199188CF953C /* Pods_Wia_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wia_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A1BA903D234CDAAED25FEA6B0D7E41A /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		8B31A12072C86CA1A5EB781116B1A232 /* WiaCommand.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = WiaCommand.h; sourceTree = "<group>"; };
+		8B31A12072C86CA1A5EB781116B1A232 /* WiaFunction.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = WiaFunction.h; sourceTree = "<group>"; };
 		8B666B3503AFDB20FA8C9C706FCDE5DC /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLRequestSerialization.m; path = AFNetworking/AFURLRequestSerialization.m; sourceTree = "<group>"; };
 		8C52A480CF489BD2BDA59DF341FC1426 /* NSObject+Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+Expecta.h"; path = "Expecta/NSObject+Expecta.h"; sourceTree = "<group>"; };
 		8E5996560561610DFD410B133E7995E9 /* Wia.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Wia.xcconfig; sourceTree = "<group>"; };
@@ -763,8 +763,8 @@
 				D113469F38F8D67B9BF66DBBEB539346 /* WiaAccessToken.m */,
 				6DC50FDBACFC4E6CB0B6C949130B6223 /* WiaClient.h */,
 				0329D6BD3D91E06733B4C8209A479D1A /* WiaClient.m */,
-				8B31A12072C86CA1A5EB781116B1A232 /* WiaCommand.h */,
-				7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaCommand.m */,
+				8B31A12072C86CA1A5EB781116B1A232 /* WiaFunction.h */,
+				7E53EABCA6B29551DC6BD60BDBFAD40E /* WiaFunction.m */,
 				123D3B6EEC05649D8E39F6BA07565B3A /* WiaDevice.h */,
 				503CFFA2B17EAC95B6CD43D5BCE27CFF /* WiaDevice.m */,
 				F1023E6EBD32C6EDE2272775FBB28D1A /* WiaEvent.h */,
@@ -1184,7 +1184,7 @@
 				4A0E73611C242BF900027B79 /* WiaUtils.h in Headers */,
 				13DECC906A71D21689BE905FE4834740 /* WiaAccessToken.h in Headers */,
 				67D9C400A6F861FD596D0D5FDB024280 /* WiaClient.h in Headers */,
-				BCF4FC427AACB031EF05BCE3D911A3F3 /* WiaCommand.h in Headers */,
+				BCF4FC427AACB031EF05BCE3D911A3F3 /* WiaFunction.h in Headers */,
 				2A82DA0CAC0221EE52C5900CFCDB3622 /* WiaDevice.h in Headers */,
 				4A0F45BA1C233CE8003B4A54 /* WiaLog.h in Headers */,
 				611B52B6A8856EBCA73307FD24A81348 /* WiaEvent.h in Headers */,
@@ -1427,7 +1427,7 @@
 				351707B05465ADF0D0597DDC5EA55C61 /* Wia-dummy.m in Sources */,
 				F137DFDB8D097790465A7AA1DAC217A1 /* WiaAccessToken.m in Sources */,
 				6767D68B27C380E995FA645DABD76D19 /* WiaClient.m in Sources */,
-				820FFC4BC811D3CF54322FA86506704E /* WiaCommand.m in Sources */,
+				820FFC4BC811D3CF54322FA86506704E /* WiaFunction.m in Sources */,
 				CB78EEFDD945ADEC21069184B365BD97 /* WiaDevice.m in Sources */,
 				829D2D075F6F18B08E0EF6B39184FEF2 /* WiaEvent.m in Sources */,
 				4A0F45BB1C233CE8003B4A54 /* WiaLog.m in Sources */,

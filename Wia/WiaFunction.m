@@ -1,20 +1,21 @@
 //
-//  WiaCommand.m
+//  WiaFunction.m
 //  Pods
 //
 //  Created by Conall Laverty on 19/10/2015.
 //
 //
 
-#import "WiaCommand.h"
+#import "WiaFunction.h"
 
-@implementation WiaCommand
+@implementation WiaFunction
 
-@synthesize name, isEnabled, enabledAt, createdAt, updatedAt, data;
+@synthesize deviceKey, name, isEnabled, enabledAt, createdAt, updatedAt, data;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
+        self.deviceKey = [dict objectForKey:@"deviceKey"];
         self.name = [dict objectForKey:@"name"];
         if ([dict objectForKey:@"isEnabled"]) {
             self.isEnabled = [[dict objectForKey:@"isEnabled"] boolValue];
@@ -40,6 +41,7 @@
     id copy = [[[self class] alloc] init];
     
     if (copy) {
+        [copy setDeviceKey:self.deviceKey];
         [copy setName:self.name];
         [copy setIsEnabled:self.isEnabled];
         [copy setEnabledAt:self.enabledAt];
