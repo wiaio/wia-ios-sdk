@@ -240,69 +240,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }
 }
 
--(void)listEvents:(NSDictionary *)params success:(void (^)(NSArray *events))success
-           failure:(void (^)(NSError *error))failure {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
-    [manager GET:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            WiaLogger(responseObject);
-            NSMutableArray *events = [[NSMutableArray alloc] init];
-            for (id event in [responseObject objectForKey:@"events"]) {
-                WiaEvent *e = [[WiaEvent alloc] initWithDictionary:event];
-                [events addObject:e];
-            }
-            success(events);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WiaLogger(@"Error: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 // Logs
--(void)publishLog:(nonnull NSDictionary *)log success:(nullable void (^)(WiaLog * _Nullable event))success
-            failure:(nullable void (^)(NSError * _Nullable error))failure {
-    WiaLogger(@"Publishing log - %@", log);
-    
-    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected && self.clientInfo) {
-        WiaLogger(@"Publishing event on stream.");
-        NSDictionary *device = [self.clientInfo objectForKey:@"device"];
-        if (!device) {
-            WiaLogger(@"Cannot send event. Not a device.");
-            return;
-        }
-        NSString *deviceKey = [device objectForKey:@"deviceKey"];
-        if (!deviceKey) {
-            WiaLogger(@"Cannot send event. deviceKey not in client info.");
-            return;
-        }
-        WiaLogger(@"Sending event on stream with topic %@", [NSString stringWithFormat:@"devices/%@/logs/%@", deviceKey, [log objectForKey:@"level"]]);
-        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:log] onTopic:[NSString stringWithFormat:@"devices/%@/logs/%@", deviceKey, [log objectForKey:@"level"]] retain:YES qos:MQTTQosLevelAtLeastOnce];
-    } else {
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-        
-        [manager POST:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:log success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if (success) {
-                success([[WiaLog alloc] initWithDictionary:responseObject]);
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            WiaLogger(@"Error: %@", error);
-            if (failure) {
-                failure(error);
-            }
-        }];
-    }
-}
-
 -(void)subscribeToLogs:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"deviceKey"]) {
         if ([params objectForKey:@"level"]) {
@@ -330,7 +268,6 @@ static NSString *const mqttApiHost = @"api.wia.io";
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.clientToken] forHTTPHeaderField:@"Authorization"];
-    
     [manager GET:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             WiaLogger(responseObject);
@@ -349,7 +286,6 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }];
 }
 
-// Functions
 -(void)listFunctions:(NSDictionary *)params success:(void (^)(NSArray *functions))success
            failure:(void (^)(NSError *error))failure {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

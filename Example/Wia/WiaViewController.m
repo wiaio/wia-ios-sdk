@@ -21,23 +21,13 @@
 
     [WiaClient debug:true];
 
-    [[WiaClient sharedInstance] initWithToken:@"u_OyzxQKgO4mfXBRdWQbVqMSsp3ZJm1M8p"];
+    [[WiaClient sharedInstance] initWithToken:@"u_userToken"];
     [[WiaClient sharedInstance] setDelegate:self];
     [[WiaClient sharedInstance] connectToStream];
 }
 
 -(void)connectedToStream {
     NSLog(@"Connected to stream.");
-    NSLog(@"Calling function.");
-    [[WiaClient sharedInstance] callFunction:@{
-                                               @"deviceKey": @"dev_VySzBK2BUoBo6wTw",
-                                               @"name": @"testApple"
-                                               }];
-
-    /*[[WiaClient sharedInstance] publishLog:@{
-                                            @"level": @"info",
-                                            @"message": @"testing logs on ios"
-                                            } success:nil failure:nil];*/
 }
 
 -(void)disconnectedFromStream:(NSError *)error {
