@@ -14,11 +14,14 @@
 #import "WiaUser.h"
 #import "WiaLog.h"
 #import "MQTTClient.h"
+#import "WiaUtils.h"
 
 @protocol WiaClientDelegate <NSObject>
 
 @optional
 
+- (void)connectedToStream;
+- (void)disconnectedFromStream:(NSError * _Nullable)error;
 - (void)newEvent:(WiaEvent * _Nullable)event;
 - (void)newLog:(WiaLog * _Nullable)log;
 
@@ -35,12 +38,12 @@
 @property (nonatomic, strong, nullable) MQTTSession *mqttSession;
 
 +(nonnull instancetype)sharedInstance;
++(void)debug:(BOOL)showDebugLogs;
 
 -(nonnull instancetype)initWithToken:(nonnull NSString *)token NS_DESIGNATED_INITIALIZER;
 
 // Stream
--(void)connectToStream:(nullable void (^)())success
-               failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)connectToStream;
 -(void)disconnectFromStream;
 
 // Devices

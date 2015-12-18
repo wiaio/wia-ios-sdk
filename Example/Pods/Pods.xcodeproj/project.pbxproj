@@ -68,6 +68,8 @@
 		44BD14F43318859EDEA118C331E7B418 /* SPTExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 389BE7F7E1DCE0FD42A7856F1B95EFA1 /* SPTExample.m */; };
 		46137F5CC368BF38BAF0D0AF81DD8FFE /* EXPMatchers+raise.h in Headers */ = {isa = PBXBuildFile; fileRef = EB4142B128D82E181ECF48A731DF5A8D /* EXPMatchers+raise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		471FD4F68E27AB26FA2AEBB8B245CEE4 /* NSValue+Expecta.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A90288DD2A082F26E17743797029AFF /* NSValue+Expecta.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A0E73611C242BF900027B79 /* WiaUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A0E735F1C242BF900027B79 /* WiaUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A0E73621C242BF900027B79 /* WiaUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A0E73601C242BF900027B79 /* WiaUtils.m */; };
 		4A0F45BA1C233CE8003B4A54 /* WiaLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A0F45B81C233CE8003B4A54 /* WiaLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A0F45BB1C233CE8003B4A54 /* WiaLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A0F45B91C233CE8003B4A54 /* WiaLog.m */; };
 		4A1CD7E302FB7C9A0F86665B5C5367BC /* Pods-Wia_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D64F3E4F68F9A30F5C48CFBAA0B21444 /* Pods-Wia_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -354,6 +356,8 @@
 		49AE08F4DCC151F4B40C75AB8C3B15F6 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
 		49D454AF881951BD6C02B097241AD886 /* EXPMatchers+beginWith.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beginWith.m"; path = "Expecta/Matchers/EXPMatchers+beginWith.m"; sourceTree = "<group>"; };
 		49D638A84BA2063D9AB73D20B4D80B3B /* EXPMatchers+beSupersetOf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beSupersetOf.h"; path = "Expecta/Matchers/EXPMatchers+beSupersetOf.h"; sourceTree = "<group>"; };
+		4A0E735F1C242BF900027B79 /* WiaUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaUtils.h; sourceTree = "<group>"; };
+		4A0E73601C242BF900027B79 /* WiaUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaUtils.m; sourceTree = "<group>"; };
 		4A0F45B81C233CE8003B4A54 /* WiaLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaLog.h; sourceTree = "<group>"; };
 		4A0F45B91C233CE8003B4A54 /* WiaLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaLog.m; sourceTree = "<group>"; };
 		4A698D6F197A2503C6310D381482ECF7 /* EXPDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPDefines.h; path = Expecta/EXPDefines.h; sourceTree = "<group>"; };
@@ -769,6 +773,8 @@
 				4A0F45B91C233CE8003B4A54 /* WiaLog.m */,
 				294BF2A3A14D5F501D91A2398BEE8685 /* WiaUser.h */,
 				4D6B4F83AF5520C1B627F159C461AE7A /* WiaUser.m */,
+				4A0E735F1C242BF900027B79 /* WiaUtils.h */,
+				4A0E73601C242BF900027B79 /* WiaUtils.m */,
 			);
 			path = Wia;
 			sourceTree = "<group>";
@@ -1175,6 +1181,7 @@
 			files = (
 				0531B211FE8B7BA1CD1702B5FDD99D93 /* Wia-umbrella.h in Headers */,
 				6DDF9F10A47669DD7EA2E540C7294B14 /* Wia.h in Headers */,
+				4A0E73611C242BF900027B79 /* WiaUtils.h in Headers */,
 				13DECC906A71D21689BE905FE4834740 /* WiaAccessToken.h in Headers */,
 				67D9C400A6F861FD596D0D5FDB024280 /* WiaClient.h in Headers */,
 				BCF4FC427AACB031EF05BCE3D911A3F3 /* WiaCommand.h in Headers */,
@@ -1424,6 +1431,7 @@
 				CB78EEFDD945ADEC21069184B365BD97 /* WiaDevice.m in Sources */,
 				829D2D075F6F18B08E0EF6B39184FEF2 /* WiaEvent.m in Sources */,
 				4A0F45BB1C233CE8003B4A54 /* WiaLog.m in Sources */,
+				4A0E73621C242BF900027B79 /* WiaUtils.m in Sources */,
 				7661444FA96B0814E2939EAF0BE4821F /* WiaUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

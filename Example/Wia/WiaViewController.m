@@ -19,19 +19,18 @@
 {
     [super viewDidLoad];
 
-    WiaClient *wia = [[WiaClient sharedInstance] initWithToken:@"u_userToken"];
-    
-    [wia setDelegate:self];
-    
-    [wia connectToStream:^{
-        NSLog(@"connectToStream - Success");
-    } failure:^(NSError * _Nullable error) {
-        NSLog(@"connectToStream - Failure");
-    }];
-    
-    [wia subscribeToLogs:@{
-                             @"deviceKey": @"device_deviceKey"
-                            }];
+    [WiaClient debug:true];
+
+    [[WiaClient sharedInstance] initWithToken:@"u_userToken"];
+    [[WiaClient sharedInstance] setDelegate:self];
+    [[WiaClient sharedInstance] connectToStream];
+}
+
+-(void)connectedToStream {
+    NSLog(@"Connected to stream.");
+    [[WiaClient sharedInstance] subscribeToEvents:@{
+                                @"deviceKey": @"dev_deviceKey"
+                             }];
 }
 
 -(void)newEvent:(WiaEvent *)event {
@@ -44,6 +43,10 @@
 -(void)newLog:(WiaLog *)log {
     NSLog(@"%@", log.level);
     NSLog(@"%@", log.message);
+}
+
+-(void)disconnectedFromStream:(NSError *)error {
+    NSLog(@"Disconnected from stream.");
 }
 
 - (void)didReceiveMemoryWarning

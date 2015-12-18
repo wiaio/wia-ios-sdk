@@ -8,6 +8,7 @@
 
 #import "WiaClient.h"
 #import "AFNetworking.h"
+#import "WiaUtils.h"
 
 static NSString *const restApiProtocol = @"https";
 static NSString *const restApiURLBase = @"api.wia.io";
@@ -31,8 +32,8 @@ static NSString *const mqttApiHost = @"api.wia.io";
     return sharedInstance;
 }
 
-- (instancetype)init {
-    return [self initWithToken:self.clientToken];
++(void)debug:(BOOL)showDebugLogs {
+    WiaSetShowDebugLogs(showDebugLogs);
 }
 
 - (instancetype)initWithToken:(NSString *)token {
@@ -44,7 +45,7 @@ static NSString *const mqttApiHost = @"api.wia.io";
 }
 
 // Stream
--(void)connectToStream:(void (^)())success failure:(void (^)(NSError *))failure {
+-(void)connectToStream {
     if (!self.mqttSession) {
         self.mqttSession = [[MQTTSession alloc] init];
     }
@@ -230,32 +231,47 @@ static NSString *const mqttApiHost = @"api.wia.io";
 
 // MQTTSessionDelegate
 - (void)connected:(MQTTSession *)session {
-    NSLog(@"connected");
+    WiaLogger(@"Connected to stream.");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(connectedToStream)]) {
+        [self.delegate connectedToStream];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnected" object:nil];
 }
 
 - (void)connectionRefused:(MQTTSession *)session error:(NSError *)error {
-    NSLog(@"connectionRefused");
+    WiaLogger(@"Connection refused.");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
+        [self.delegate disconnectedFromStream:error];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionRefused" object:nil];
 }
 
 - (void)connectionClosed:(MQTTSession *)session {
-    NSLog(@"connectionClosed");
+    WiaLogger(@"Connection closed.");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
+        [self.delegate disconnectedFromStream:nil];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionClose" object:nil];
 }
 
 - (void)connectionError:(MQTTSession *)session error:(NSError *)error {
-    NSLog(@"connectionError");
+    WiaLogger(@"Connection error.");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
+        [self.delegate disconnectedFromStream:nil];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionError" object:nil];
 }
 
 - (void)protocolError:(MQTTSession *)session error:(NSError *)error {
-    NSLog(@"protocolError");
+    WiaLogger(@"Protocol error.");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
+        [self.delegate disconnectedFromStream:nil];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamProtocolError" object:nil];
 }
 
 - (void)newMessage:(MQTTSession *)session data:(NSData *)data onTopic:(NSString *)topic qos:(MQTTQosLevel)qos retained:(BOOL)retained mid:(unsigned int)mid {
-    NSLog(@"topic - %@", topic);
+    WiaLogger(@"New message received. topic - %@, data - %@", topic, data);
     
     NSRange searchedRange = NSMakeRange(0, [topic length]);
     NSError *error = nil;
@@ -264,11 +280,14 @@ static NSString *const mqttApiHost = @"api.wia.io";
     NSTextCheckingResult *match = [regex firstMatchInString:topic options:0 range: searchedRange];
     
     if (match) {
+        WiaLogger(@"WiaNewEvent");
         NSString *deviceKey = [topic substringWithRange:[match rangeAtIndex:1]];
         
-        WiaEvent *event = [[WiaEvent alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-        event.deviceKey = deviceKey;
-        [self.delegate newEvent:event];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newEvent:)]) {
+            WiaEvent *event = [[WiaEvent alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            event.deviceKey = deviceKey;
+            [self.delegate newEvent:event];
+        }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaNewEvent" object:self
                                                           userInfo:[NSJSONSerialization JSONObjectWithData:data
@@ -280,11 +299,14 @@ static NSString *const mqttApiHost = @"api.wia.io";
     match = [regex firstMatchInString:topic options:0 range: searchedRange];
 
     if (match) {
+        WiaLogger(@"WiaNewLog");
         NSString *deviceKey = [topic substringWithRange:[match rangeAtIndex:1]];
         
-        WiaLog *log = [[WiaLog alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-        log.deviceKey = deviceKey;
-        [self.delegate newLog:log];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
+            WiaLog *log = [[WiaLog alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            log.deviceKey = deviceKey;
+            [self.delegate newLog:log];
+        }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaNewLog" object:self
                                                           userInfo:[NSJSONSerialization JSONObjectWithData:data
@@ -293,5 +315,32 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }
 }
 
+- (void)handleEvent:(MQTTSession *)session event:(MQTTSessionEvent)eventCode error:(NSError *)error {
+    WiaLogger(@"handleEvent. eventCode: %d\terror: %@\t", eventCode, error);
+}
+
+- (void)session:(MQTTSession*)session handleEvent:(MQTTSessionEvent)eventCode {
+    WiaLogger(@"handleEvent. eventCode: %d", eventCode);
+}
+
+- (void)messageDelivered:(MQTTSession *)session msgID:(UInt16)msgID {
+    WiaLogger(@"messageDelivered.");
+}
+
+- (void)subAckReceived:(MQTTSession *)session msgID:(UInt16)msgID grantedQoss:(NSArray<NSNumber *> *)qoss {
+    WiaLogger(@"subAckReceived.");
+}
+
+- (void)unsubAckReceived:(MQTTSession *)session msgID:(UInt16)msgID {
+    WiaLogger(@"unsubAckReceived.");
+}
+
+- (void)sending:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
+    WiaLogger(@"sending.");
+}
+
+- (void)received:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
+    WiaLogger(@"received.");
+}
 
 @end
