@@ -15,6 +15,7 @@
 #import "WiaLog.h"
 #import "MQTTClient.h"
 #import "WiaUtils.h"
+#import "WiaAccessToken.h"
 
 @protocol WiaClientDelegate <NSObject>
 
@@ -43,6 +44,10 @@
 +(void)debug:(BOOL)showDebugLogs;
 
 -(nonnull instancetype)initWithToken:(nonnull NSString *)token NS_DESIGNATED_INITIALIZER;
+
+// Access token
+-(void)generateAccessToken:(nonnull NSDictionary *)tokenRequest success:(nullable void (^)(WiaAccessToken * _Nullable accessToken))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Stream
 -(void)connectToStream;

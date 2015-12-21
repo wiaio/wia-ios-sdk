@@ -65,6 +65,25 @@ static NSString *const mqttApiHost = @"api.wia.io";
     }
 }
 
+// Access token
+-(void)generateAccessToken:(NSDictionary *)tokenRequest success:(void (^)(WiaAccessToken *accessToken))success
+            failure:(void (^)(NSError *error))failure {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    [manager POST:[NSString stringWithFormat:@"%@/auth/token", [self getRestApiEndpoint]] parameters:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success([[WiaAccessToken alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 // Stream
 -(void)connectToStream {
     if (!self.mqttSession) {

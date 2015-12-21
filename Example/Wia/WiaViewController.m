@@ -20,10 +20,6 @@
     [super viewDidLoad];
 
     [WiaClient debug:true];
-
-    [[WiaClient sharedInstance] initWithToken:@"u_userToken"];
-    [[WiaClient sharedInstance] setDelegate:self];
-    [[WiaClient sharedInstance] connectToStream];
 }
 
 -(void)connectedToStream {
