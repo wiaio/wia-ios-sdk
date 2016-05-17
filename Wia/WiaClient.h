@@ -78,6 +78,8 @@
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)subscribeToEvents:(nonnull NSDictionary *)params;
 -(void)unsubscribeFromEvents:(nonnull NSDictionary *)params;
+-(void)listEvents:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable events, NSNumber * _Nullable count))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Users
 -(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success

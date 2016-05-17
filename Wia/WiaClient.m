@@ -286,6 +286,31 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }
 }
 
+-(void)listEvents:(NSDictionary *)params success:(void (^)(NSArray *events, NSNumber *count))success
+          failure:(void (^)(NSError *error))failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+        if (success) {
+            WiaLogger(responseObject);
+            NSMutableArray *events = [[NSMutableArray alloc] init];
+            for (id eventObj in [responseObject objectForKey:@"events"]) {
+                WiaEvent *e = [[WiaEvent alloc] initWithDictionary:eventObj];
+                [events addObject:e];
+            }
+            success(events, [responseObject objectForKey:@"count"]);
+        }
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 // Logs
 -(void)subscribeToLogs:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"deviceId"]) {

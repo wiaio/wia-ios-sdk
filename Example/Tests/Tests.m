@@ -207,7 +207,62 @@ describe(@"mqtt", ^{
             [[WiaClient sharedInstance] connectToStream];
         });
     });
+    
+    afterAll(^{
+        [[WiaClient sharedInstance] disconnectFromStream];
+    });
 });
 
+describe(@"events", ^{
+    beforeAll(^{
+        [[WiaClient sharedInstance] reset];
+        [WiaClient debug:YES];
+        [[WiaClient sharedInstance] setRestApiProtocol:@"http"];
+        [[WiaClient sharedInstance] setRestApiHost:@"localhost"];
+        [[WiaClient sharedInstance] setRestApiPort:@"8081"];
+        
+        [[WiaClient sharedInstance] setMqttApiProtocol:@"mqtt"];
+        [[WiaClient sharedInstance] setMqttApiHost:@"localhost"];
+        [[WiaClient sharedInstance] setMqttApiPort:@"1883"];
+        [[WiaClient sharedInstance] setMqttApiSecure:NO];
+        
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] generateAccessToken:@{
+                                                              @"username": @"yh9frZAlX0ApiosL@y6FyH1KNnq7Epkfd.com",
+                                                              @"password": @"password",
+                                                              @"scope": @"user",
+                                                              @"grantType": @"password"
+                                                              } success:^(WiaAccessToken * _Nullable accessToken) {
+                                                                  XCTAssertNotNil(accessToken);
+                                                                  [[WiaClient sharedInstance] setSecretKey:accessToken.accessToken];
+                                                                  done();
+                                                              } failure:^(NSError * _Nullable error) {
+                                                                  XCTAssertNil(error);
+                                                              }];
+        });
+    });
+    
+    it(@"lists events", ^{
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] createDevice:@{@"name": @"testDevice"}
+                                             success:^(WiaDevice * _Nullable device) {
+                                                 XCTAssertNotNil(device);
+
+                                                 [[WiaClient sharedInstance] listEvents:@{
+                                                                                          @"device": device.id
+                                                                                          }
+                                                                                success:^(NSArray * _Nullable events, NSNumber * _Nullable count) {
+                                                                                    XCTAssertNotNil(events);
+                                                                                    XCTAssertNotNil(count);
+                                                                                    done();
+                                                                                } failure:^(NSError * _Nullable error) {
+                                                                                    XCTAssertNil(error);
+                                                                                }];
+                                             } failure:^(NSError * _Nullable error) {
+                                                 XCTAssertNil(error);
+                                             }];
+        });
+    });
+});
 
 SpecEnd
