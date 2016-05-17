@@ -40,7 +40,7 @@
 @property (nonatomic, readwrite, nullable) NSString *mqttApiProtocol;
 @property (nonatomic, readwrite, nullable) NSString *mqttApiHost;
 @property (nonatomic, readwrite, nullable) NSString *mqttApiPort;
-@property (nonatomic, readwrite, nullable) BOOL *mqttApiSecure;
+@property (nonatomic, readwrite) BOOL mqttApiSecure;
 
 @property (nonatomic, strong, nullable) MQTTSession *mqttSession;
 

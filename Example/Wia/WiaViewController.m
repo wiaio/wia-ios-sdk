@@ -20,26 +20,6 @@
     [super viewDidLoad];
 }
 
--(void)connectedToStream {
-    NSLog(@"Connected to stream.");
-}
-
--(void)disconnectedFromStream:(NSError *)error {
-    NSLog(@"Disconnected from stream.");
-}
-
--(void)newEvent:(WiaEvent *)event {
-    NSLog(@"%@", event.name);
-    NSLog(@"%@", event.deviceKey);
-    NSLog(@"%@", event.eventData);
-    NSLog(@"%@", event.timestamp);
-}
-
-//-(void)newLog:(WiaLog *)log {
-//    NSLog(@"%@", log.level);
-//    NSLog(@"%@", log.message);
-//}
-//
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -115,10 +115,12 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         self.mqttSession = [[MQTTSession alloc] init];
     }
     
+    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+
     [self.mqttSession setDelegate:self];
     [self.mqttSession setUserName:self.secretKey];
     [self.mqttSession setPassword:@" "];
-    [self.mqttSession connectAndWaitToHost:self.mqttApiHost port:self.mqttApiPort usingSSL:self.mqttApiSecure];
+    [self.mqttSession connectAndWaitToHost:self.mqttApiHost port:[[formatter numberFromString:self.mqttApiPort] unsignedShortValue] usingSSL:self.mqttApiSecure];
 }
 
 -(void)disconnectFromStream {

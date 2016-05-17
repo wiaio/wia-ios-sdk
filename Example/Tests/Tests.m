@@ -153,4 +153,61 @@ describe(@"devices", ^{
     });
 });
 
+describe(@"mqtt", ^{
+    beforeAll(^{
+        [[WiaClient sharedInstance] reset];
+        [WiaClient debug:YES];
+        [[WiaClient sharedInstance] setRestApiProtocol:@"http"];
+        [[WiaClient sharedInstance] setRestApiHost:@"localhost"];
+        [[WiaClient sharedInstance] setRestApiPort:@"8081"];
+        
+        [[WiaClient sharedInstance] setMqttApiProtocol:@"mqtt"];
+        [[WiaClient sharedInstance] setMqttApiHost:@"localhost"];
+        [[WiaClient sharedInstance] setMqttApiPort:@"1883"];
+        [[WiaClient sharedInstance] setMqttApiSecure:NO];
+
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] generateAccessToken:@{
+                                                              @"username": @"yh9frZAlX0ApiosL@y6FyH1KNnq7Epkfd.com",
+                                                              @"password": @"password",
+                                                              @"scope": @"user",
+                                                              @"grantType": @"password"
+                                                              } success:^(WiaAccessToken * _Nullable accessToken) {
+                                                                  XCTAssertNotNil(accessToken);
+                                                                  [[WiaClient sharedInstance] setSecretKey:accessToken.accessToken];
+                                                                  done();
+                                                              } failure:^(NSError * _Nullable error) {
+                                                                  XCTAssertNil(error);
+                                                                  done();
+                                                              }];
+        });
+    });
+    
+    beforeEach(^{
+        [[WiaClient sharedInstance] disconnectFromStream];
+    });
+    
+    it(@"connect to stream", ^{
+        waitUntil(^(DoneCallback done) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+                done();
+            }];
+            [[WiaClient sharedInstance] connectToStream];
+        });
+    });
+    
+    it(@"connect and disconnect to stream", ^{
+        waitUntil(^(DoneCallback done) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+                [[WiaClient sharedInstance] disconnectFromStream];
+            }];
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+                done();
+            }];
+            [[WiaClient sharedInstance] connectToStream];
+        });
+    });
+});
+
+
 SpecEnd
