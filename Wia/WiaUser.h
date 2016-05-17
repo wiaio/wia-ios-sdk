@@ -10,7 +10,7 @@
 
 @interface WiaUser : NSObject
 
-@property (nonatomic, copy, nullable) NSString *userKey;
+@property (nonatomic, copy, nullable) NSString *id;
 @property (nonatomic, copy, nullable) NSString *username;
 @property (nonatomic, copy, nullable) NSString *fullName;
 @property (nonatomic, copy, nullable) NSString *firstName;

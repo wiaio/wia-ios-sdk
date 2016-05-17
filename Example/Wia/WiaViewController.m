@@ -18,8 +18,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [WiaClient debug:true];
 }
 
 -(void)connectedToStream {
@@ -37,11 +35,11 @@
     NSLog(@"%@", event.timestamp);
 }
 
--(void)newLog:(WiaLog *)log {
-    NSLog(@"%@", log.level);
-    NSLog(@"%@", log.message);
-}
-
+//-(void)newLog:(WiaLog *)log {
+//    NSLog(@"%@", log.level);
+//    NSLog(@"%@", log.message);
+//}
+//
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

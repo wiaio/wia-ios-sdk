@@ -1,0 +1,6 @@
+framework module Pods_Wia_Example_Wia_Tests {
+  umbrella header "Pods-Wia_Example-Wia_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

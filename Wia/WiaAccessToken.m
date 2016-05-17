@@ -16,9 +16,9 @@
     self = [super init];
     if (self) {
         self.accessToken = [dict objectForKey:@"accessToken"];
+        self.refreshToken = [dict objectForKey:@"refreshToken"];
         self.tokenType = [dict objectForKey:@"tokenType"];
         self.expiresIn = [dict objectForKey:@"expiresIn"];
-        self.refreshToken = [dict objectForKey:@"refreshToken"];
         self.scope = [dict objectForKey:@"scope"];
     }
     return self;
@@ -30,9 +30,9 @@
     
     if (copy) {
         [copy setAccessToken:self.accessToken];
+        [copy setRefreshToken:self.refreshToken];
         [copy setTokenType:self.tokenType];
         [copy setExpiresIn:self.expiresIn];
-        [copy setRefreshToken:self.refreshToken];
         [copy setScope:self.scope];
     }
     

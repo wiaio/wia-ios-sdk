@@ -10,7 +10,7 @@
 
 @interface WiaDevice : NSObject
 
-@property (nonatomic, copy, nullable) NSString *deviceKey;
+@property (nonatomic, copy, nullable) NSString *id;
 @property (nonatomic, copy, nullable) NSString *name;
 @property (nonatomic) BOOL isOnline;
 @property (nonatomic, copy, nullable) NSDate *createdAt;

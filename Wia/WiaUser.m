@@ -10,12 +10,12 @@
 
 @implementation WiaUser
 
-@synthesize userKey, username, fullName, firstName, lastName, createdAt, updatedAt;
+@synthesize id, username, fullName, firstName, lastName, createdAt, updatedAt;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        self.userKey = [dict objectForKey:@"userKey"];
+        self.id = [dict objectForKey:@"id"];
         self.username = [dict objectForKey:@"username"];
         self.fullName = [dict objectForKey:@"fullName"];
         self.firstName = [dict objectForKey:@"firstName"];
@@ -37,7 +37,7 @@
     id copy = [[[self class] alloc] init];
     
     if (copy) {
-        [copy setUserKey:self.userKey];
+        [copy setId:self.id];
         [copy setUsername:self.username];
         [copy setFullName:self.fullName];
         [copy setFirstName:self.firstName];
