@@ -117,6 +117,28 @@ describe(@"devices", ^{
                                                        }];
         });
     });
+    
+    it(@"delete device", ^{
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] createDevice:@{@"name": @"testDeviceOne"} success:^(WiaDevice * _Nullable createdDevice) {
+               XCTAssertNotNil(createdDevice);
+               [[WiaClient sharedInstance] deleteDevice:createdDevice.id
+                                                success:^(BOOL * _Nullable deleted) {
+                                                    [[WiaClient sharedInstance] retrieveDevice:createdDevice.id
+                                                                                     success:^(WiaDevice * _Nullable retrievedDevice) {
+                                                                                         XCTAssertNil(retrievedDevice);
+                                                                                     } failure:^(NSError * _Nullable error) {
+                                                                                         XCTAssertNotNil(error);
+                                                                                         done();
+                                                                                     }];
+                                                } failure:^(NSError * _Nullable error) {
+                                                    XCTAssertNil(error);
+                                                }];
+            } failure:^(NSError * _Nullable error) {
+                XCTAssertNil(error);
+            }];
+        });
+    });
 
     it(@"list devices", ^{
         waitUntil(^(DoneCallback done) {

@@ -68,7 +68,7 @@
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)updateDevice:(nonnull NSString *)deviceId fields:(nullable NSDictionary *)fields success:(nullable void (^)(WiaDevice * _Nullable device))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
--(void)deleteDevice:(nonnull NSString *)deviceId success:(nullable void (^)(WiaDevice * _Nullable device))success
+-(void)deleteDevice:(nonnull NSString *)deviceId success:(nullable void (^)(BOOL * _Nullable deleted))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)listDevices:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable devices, NSNumber * _Nullable count))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;

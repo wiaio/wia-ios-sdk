@@ -183,7 +183,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }];
 }
 
--(void)deleteDevice:(NSString *)deviceId success:(void (^)(WiaDevice *))success failure:(void (^)(NSError *))failure {
+-(void)deleteDevice:(NSString *)deviceId success:(void (^)(BOOL *))success failure:(void (^)(NSError *))failure {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -191,7 +191,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     
     [manager DELETE:[NSString stringWithFormat:@"%@/devices/%@", [self getRestApiEndpoint], deviceId] parameters:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
-            success([[WiaDevice alloc] initWithDictionary:responseObject]);
+            success(YES);
         }
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         WiaLogger(@"Error: %@", error);
