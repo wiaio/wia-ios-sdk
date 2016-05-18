@@ -280,7 +280,15 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
             return;
         }
         WiaLogger(@"Sending event on stream with topic %@", [NSString stringWithFormat:@"devices/%@/events/%@", deviceId, [event objectForKey:@"name"]]);
-        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:event] onTopic:[NSString stringWithFormat:@"devices/%@/events/%@", deviceId, [event objectForKey:@"name"]] retain:YES qos:MQTTQosLevelAtLeastOnce];
+        NSString *topic = [NSString stringWithFormat:@"devices/%@/events/%@", deviceId, [event objectForKey:@"name"]];
+
+        NSError *err;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:event options:0 error:&err];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [self.mqttSession publishAndWaitData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                            onTopic:topic
+                             retain:NO
+                                qos:MQTTQosLevelAtLeastOnce];
     } else {
         WiaLogger(@"Publishing event via rest.");
 

@@ -24,13 +24,15 @@
     
     [[WiaClient sharedInstance] setDelegate:self];
 
-    [[WiaClient sharedInstance] setSecretKey:@"u_QgwlFi7J5wzb27t5KsLZcMocqlgi1Dlb"];
+    [[WiaClient sharedInstance] setSecretKey:@"secret key"];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"WiaStreamConnected");
-        [[WiaClient sharedInstance] subscribeToEvents:@{
-                                                    @"device": @"deviceKey"
-                                                    }];
+        [NSTimer scheduledTimerWithTimeInterval:1.0
+                                         target:self
+                                       selector:@selector(onTick:)
+                                       userInfo:nil
+                                        repeats:YES];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
@@ -39,6 +41,23 @@
     
     [[WiaClient sharedInstance] connectToStream];
 }
+
+-(void)onTick:(NSTimer*)timer
+{
+    [[WiaClient sharedInstance] publishEvent:@{
+                                               @"name": @"temperature",
+                                               @"data": @(21.5)
+                                               } success:nil failure:nil];
+    
+    [[WiaClient sharedInstance] publishEvent:@{
+                                               @"name": @"gyro",
+                                               @"data": @{
+                                                       @"x": @(123),
+                                                       @"y": @"stringtest"
+                                                       }
+                                               } success:nil failure:nil];
+}
+
 
 -(void)newEvent:(WiaEvent *)event {
     NSLog(@"Got a new event");
