@@ -7,13 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQTTClient.h"
 #import "WiaClient.h"
 #import "WiaDevice.h"
 #import "WiaEvent.h"
 #import "WiaUser.h"
-#import "MQTTClient.h"
 #import "WiaUtils.h"
 #import "WiaAccessToken.h"
+#import "WiaLog.h"
+#import "WiaLocation.h"
 
 @protocol WiaClientDelegate <NSObject>
 
@@ -22,12 +24,14 @@
 - (void)connectedToStream;
 - (void)disconnectedFromStream:(NSError * _Nullable)error;
 - (void)newEvent:(WiaEvent * _Nullable)event;
+- (void)newLog:(WiaLog * _Nullable)log;
+- (void)newLocation:(WiaLocation * _Nullable)location;
 
 @end
 
 @interface WiaClient : NSObject <MQTTSessionDelegate>
 
-@property (weak, nonatomic) id<WiaClientDelegate> delegate;
+@property (weak, nonatomic, nullable) id<WiaClientDelegate> delegate;
 
 @property (nonatomic, copy, nullable) NSString *publicKey;
 @property (nonatomic, copy, nullable) NSString *secretKey;
@@ -80,6 +84,22 @@
 -(void)unsubscribeFromEvents:(nonnull NSDictionary *)params;
 -(void)listEvents:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable events, NSNumber * _Nullable count))success
            failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+// Logs
+-(void)publishLog:(nonnull NSDictionary *)log success:(nullable void (^)(WiaLog * _Nullable log))success
+          failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)subscribeToLogs:(nonnull NSDictionary *)params;
+-(void)unsubscribeFromLogs:(nonnull NSDictionary *)params;
+-(void)listLogs:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable logs, NSNumber * _Nullable count))success
+        failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+// Locations
+-(void)publishLocation:(nonnull NSDictionary *)location success:(nullable void (^)(WiaLocation * _Nullable location))success
+          failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)subscribeToLocations:(nonnull NSDictionary *)params;
+-(void)unsubscribeFromLocations:(nonnull NSDictionary *)params;
+-(void)listLocations:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable locations, NSNumber * _Nullable count))success
+        failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Users
 -(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success

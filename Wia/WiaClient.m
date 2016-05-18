@@ -266,22 +266,21 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 }
 
 -(void)subscribeToEvents:(nonnull NSDictionary *)params {
-    if ([params objectForKey:@"deviceId"]) {
+    if ([params objectForKey:@"device"]) {
         if ([params objectForKey:@"name"]) {
-            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/%@", [params objectForKey:@"deviceId"], [params objectForKey:@"name"]] atLevel:MQTTQosLevelAtLeastOnce];
+            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/%@", [params objectForKey:@"device"], [params objectForKey:@"name"]] atLevel:MQTTQosLevelAtLeastOnce];
         } else {
-            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"deviceId"]] atLevel:MQTTQosLevelAtLeastOnce];
+            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
         }
     }
 }
 
-
 -(void)unsubscribeFromEvents:(nonnull NSDictionary *)params {
-    if ([params objectForKey:@"deviceId"]) {
+    if ([params objectForKey:@"device"]) {
         if ([params objectForKey:@"name"]) {
-            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/events/%@", [params objectForKey:@"deviceId"], [params objectForKey:@"name"]]];
+            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/events/%@", [params objectForKey:@"device"], [params objectForKey:@"name"]]];
         } else {
-            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"deviceId"]]];
+            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"device"]]];
         }
     }
 }
@@ -313,50 +312,88 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 // Logs
 -(void)subscribeToLogs:(nonnull NSDictionary *)params {
-    if ([params objectForKey:@"deviceId"]) {
+    if ([params objectForKey:@"device"]) {
         if ([params objectForKey:@"level"]) {
-            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/logs/%@", [params objectForKey:@"deviceId"], [params objectForKey:@"level"]] atLevel:MQTTQosLevelAtLeastOnce];
+            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/logs/%@", [params objectForKey:@"device"], [params objectForKey:@"level"]] atLevel:MQTTQosLevelAtLeastOnce];
         } else {
-            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/logs/+", [params objectForKey:@"deviceId"]] atLevel:MQTTQosLevelAtLeastOnce];
+            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/logs/+", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
         }
     }
 }
-
 
 -(void)unsubscribeFromLogs:(nonnull NSDictionary *)params {
-    if ([params objectForKey:@"deviceId"]) {
+    if ([params objectForKey:@"device"]) {
         if ([params objectForKey:@"level"]) {
-            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/logs/%@", [params objectForKey:@"deviceId"], [params objectForKey:@"level"]]];
+            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/logs/%@", [params objectForKey:@"device"], [params objectForKey:@"level"]]];
         } else {
-            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/logs/+", [params objectForKey:@"deviceId"]]];
+            [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/logs/+", [params objectForKey:@"device"]]];
         }
     }
 }
 
-//-(void)listLogs:(NSDictionary *)params success:(void (^)(NSArray *logs))success
-//          failure:(void (^)(NSError *error))failure {
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
-//    [manager GET:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
-//        if (success) {
-//            WiaLogger(responseObject);
-//            NSMutableArray *logs = [[NSMutableArray alloc] init];
-//            for (id log in [responseObject objectForKey:@"logs"]) {
-//                WiaLog *l = [[WiaLog alloc] initWithDictionary:log];
-//                [logs addObject:l];
-//            }
-//            success(logs);
-//        }
-//    } failure:^(NSURLSessionTask *operation, NSError *error) {
-//        WiaLogger(@"Error: %@", error);
-//        if (failure) {
-//            failure(error);
-//        }
-//    }];
-//}
-//
+-(void)listLogs:(NSDictionary *)params success:(void (^)(NSArray *logs, NSNumber *count))success
+          failure:(void (^)(NSError *error))failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+        if (success) {
+            WiaLogger(responseObject);
+            NSMutableArray *logs = [[NSMutableArray alloc] init];
+            for (id logObj in [responseObject objectForKey:@"logs"]) {
+                WiaLog *l = [[WiaEvent alloc] initWithDictionary:logObj];
+                [logs addObject:l];
+            }
+            success(logs, [responseObject objectForKey:@"count"]);
+        }
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+// Locations
+-(void)subscribeToLocations:(nonnull NSDictionary *)params {
+    if ([params objectForKey:@"device"]) {
+        [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/locations", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
+    }
+}
+
+-(void)unsubscribeFromLocations:(nonnull NSDictionary *)params {
+    if ([params objectForKey:@"device"]) {
+        [self.mqttSession unsubscribeTopic:[NSString stringWithFormat:@"devices/%@/locations", [params objectForKey:@"device"]]];
+    }
+}
+
+-(void)listLocations:(NSDictionary *)params success:(void (^)(NSArray *locations, NSNumber *count))success
+        failure:(void (^)(NSError *error))failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/locations", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+        if (success) {
+            WiaLogger(responseObject);
+            NSMutableArray *locations = [[NSMutableArray alloc] init];
+            for (id locationObj in [responseObject objectForKey:@"locations"]) {
+                WiaLog *l = [[WiaEvent alloc] initWithDictionary:locationObj];
+                [locations addObject:l];
+            }
+            success(locations, [responseObject objectForKey:@"count"]);
+        }
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 //-(void)listFunctions:(NSDictionary *)params success:(void (^)(NSArray *functions))success
 //           failure:(void (^)(NSError *error))failure {
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -485,11 +522,11 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     
     if (match) {
         WiaLogger(@"WiaNewEvent");
-        NSString *deviceId = [topic substringWithRange:[match rangeAtIndex:1]];
+        NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
         
         if (self.delegate && [self.delegate respondsToSelector:@selector(newEvent:)]) {
             WiaEvent *event = [[WiaEvent alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-//            event.deviceId = deviceId;
+            event.device = device;
             [self.delegate newEvent:event];
         }
         
@@ -501,22 +538,42 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
  
     regex = [NSRegularExpression regularExpressionWithPattern:@"devices/(.*?)/logs/(.*)" options:0 error:&error];
     match = [regex firstMatchInString:topic options:0 range: searchedRange];
+    
+    if (match) {
+        WiaLogger(@"WiaNewLog");
+        NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
+            WiaLog *log = [[WiaLog alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            log.device = device;
+            [self.delegate newLog:log];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaNewLog" object:self
+                                                          userInfo:[NSJSONSerialization JSONObjectWithData:data
+                                                                                                   options:NSJSONReadingMutableContainers error:&error]];
+        return;
+    }
 
-//    if (match) {
-//        WiaLogger(@"WiaNewLog");
-//        NSString *deviceId = [topic substringWithRange:[match rangeAtIndex:1]];
-//        
-//        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
-//            WiaLog *log = [[WiaLog alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-//            log.deviceId = deviceId;
-//            [self.delegate newLog:log];
-//        }
-//        
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaNewLog" object:self
-//                                                          userInfo:[NSJSONSerialization JSONObjectWithData:data
-//                                                                                                   options:NSJSONReadingMutableContainers error:&error]];
-//        return;
-//    }
+
+    regex = [NSRegularExpression regularExpressionWithPattern:@"devices/(.*?)/locations" options:0 error:&error];
+    match = [regex firstMatchInString:topic options:0 range: searchedRange];
+    
+    if (match) {
+        WiaLogger(@"WiaNewLocation");
+        NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
+            WiaLocation *location = [[WiaLocation alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            location.device = device;
+            [self.delegate newLocation:location];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaNewLocation" object:self
+                                                          userInfo:[NSJSONSerialization JSONObjectWithData:data
+                                                                                                   options:NSJSONReadingMutableContainers error:&error]];
+        return;
+    }
 }
 
 - (void)handleEvent:(MQTTSession *)session event:(MQTTSessionEvent)eventCode error:(NSError *)error {
