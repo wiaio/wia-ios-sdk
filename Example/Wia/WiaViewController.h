@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 Conall Laverty. All rights reserved.
 //
 
+#import "Wia.h"
+
 @import UIKit;
 
-@interface WiaViewController : UIViewController
+@interface WiaViewController : UIViewController <WiaClientDelegate>
 
 @end

@@ -17,7 +17,7 @@
         self.device = [dict objectForKey:@"device"];
         self.level = [dict objectForKey:@"level"];
         self.message = [dict objectForKey:@"message"];
-        self.logData = [dict objectForKey:@"data"];
+        self.data = [dict objectForKey:@"data"];
         if ([dict objectForKey:@"timestamp"]) {
             NSTimeInterval seconds = [[dict objectForKey:@"timestamp"] doubleValue] / 1000;
             self.timestamp =  [NSDate dateWithTimeIntervalSince1970:seconds];
@@ -35,7 +35,7 @@
         [copy setDevice:self.device];
         [copy setLevel:self.level];
         [copy setMessage:self.message];
-        [copy setLogData:self.logData];
+        [copy setData:self.data];
         [copy setTimestamp:self.timestamp];
     }
     

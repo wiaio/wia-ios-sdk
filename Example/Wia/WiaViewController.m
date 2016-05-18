@@ -7,7 +7,6 @@
 //
 
 #import "WiaViewController.h"
-#import "Wia.h"
 
 @interface WiaViewController () <WiaClientDelegate>
 
@@ -18,6 +17,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [WiaClient debug:YES];
+    
+    [[WiaClient sharedInstance] init];
+    
+    [[WiaClient sharedInstance] setDelegate:self];
+
+    [[WiaClient sharedInstance] setSecretKey:@"u_QgwlFi7J5wzb27t5KsLZcMocqlgi1Dlb"];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"WiaStreamConnected");
+        [[WiaClient sharedInstance] subscribeToEvents:@{
+                                                    @"device": @"deviceKey"
+                                                    }];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"WiaStreamConnectionClose");
+    }];
+    
+    [[WiaClient sharedInstance] connectToStream];
+}
+
+-(void)newEvent:(WiaEvent *)event {
+    NSLog(@"Got a new event");
+    NSLog(@"%@", event.data);
 }
 
 - (void)didReceiveMemoryWarning

@@ -85,6 +85,8 @@
 		4A687FB71CEC91B20021926C /* WiaEventFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A687FB51CEC91B20021926C /* WiaEventFile.m */; };
 		4A687FBA1CEC95C30021926C /* WiaLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A687FB81CEC95C30021926C /* WiaLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A687FBB1CEC95C30021926C /* WiaLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A687FB91CEC95C30021926C /* WiaLocation.m */; };
+		4A687FBE1CEC9F030021926C /* WiaDeviceApiKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A687FBC1CEC9F030021926C /* WiaDeviceApiKeys.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A687FBF1CEC9F030021926C /* WiaDeviceApiKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A687FBD1CEC9F030021926C /* WiaDeviceApiKeys.m */; };
 		4B1F1955E55877231C1963A0EF628A5A /* MQTTSSLSecurityPolicyTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF668C31880F9C253CE0B83EAA96D7F /* MQTTSSLSecurityPolicyTransport.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D099399F94AAD9151493AAD10D4A809 /* EXPMatchers+beGreaterThanOrEqualTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 465F9379159452703539B7D799964CC5 /* EXPMatchers+beGreaterThanOrEqualTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4ECA9BE68D373E094EFA019CC4EA1720 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C7725EB378A8777377DCA02A270AB2 /* CoreGraphics.framework */; };
@@ -443,6 +445,8 @@
 		4A687FB51CEC91B20021926C /* WiaEventFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaEventFile.m; sourceTree = "<group>"; };
 		4A687FB81CEC95C30021926C /* WiaLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaLocation.h; sourceTree = "<group>"; };
 		4A687FB91CEC95C30021926C /* WiaLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaLocation.m; sourceTree = "<group>"; };
+		4A687FBC1CEC9F030021926C /* WiaDeviceApiKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaDeviceApiKeys.h; sourceTree = "<group>"; };
+		4A687FBD1CEC9F030021926C /* WiaDeviceApiKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaDeviceApiKeys.m; sourceTree = "<group>"; };
 		4B7665646A1EA55AFAC92847D22D4348 /* EXPMatchers+raise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+raise.m"; path = "Expecta/Matchers/EXPMatchers+raise.m"; sourceTree = "<group>"; };
 		4C9F7BF1C743847B07F62AFE7478041A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D46B627F79C7C123948DA7F988E73CE /* DDLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDLog.m; path = Classes/DDLog.m; sourceTree = "<group>"; };
@@ -818,6 +822,8 @@
 				D3B72AB4F5FE93B51B31329CF2E5CD0D /* WiaClient.m */,
 				CFFF030376A7885F0CFB888B78CCBC99 /* WiaDevice.h */,
 				0626B02539723B5602701C88E1EF9DBA /* WiaDevice.m */,
+				4A687FBC1CEC9F030021926C /* WiaDeviceApiKeys.h */,
+				4A687FBD1CEC9F030021926C /* WiaDeviceApiKeys.m */,
 				1D737430EE62949B751A351FBCF1F78B /* WiaEvent.h */,
 				004EE925FE64C5B6CE17312232B2A4CA /* WiaEvent.m */,
 				4A687FB41CEC91B20021926C /* WiaEventFile.h */,
@@ -1277,6 +1283,7 @@
 				9504DDA6F4FBFBAC090478BAE7C1E125 /* WiaAccessToken.h in Headers */,
 				8DE3E2F99AD1F837C65D9F4C86B87497 /* WiaClient.h in Headers */,
 				6C1C32A206C0D3E4706099C167B79CDF /* WiaDevice.h in Headers */,
+				4A687FBE1CEC9F030021926C /* WiaDeviceApiKeys.h in Headers */,
 				ABB68C4D58A64FA19E40A3CF5D761815 /* WiaEvent.h in Headers */,
 				4A687FB21CEBC4CD0021926C /* WiaLog.h in Headers */,
 				DAD3221B4225BACEED169C1B497DA7C7 /* WiaUser.h in Headers */,
@@ -1727,6 +1734,7 @@
 				AD038D8CC25426002AEF766B39209EFE /* WiaEvent.m in Sources */,
 				31666BC5FDBE60F40AC51BEF2B9796C8 /* WiaUser.m in Sources */,
 				4A687FBB1CEC95C30021926C /* WiaLocation.m in Sources */,
+				4A687FBF1CEC9F030021926C /* WiaDeviceApiKeys.m in Sources */,
 				4A687FB31CEBC4CD0021926C /* WiaLog.m in Sources */,
 				6360BAD3212CDBFD0651D48A9C4765BA /* WiaUtils.m in Sources */,
 				4A687FB71CEC91B20021926C /* WiaEventFile.m in Sources */,

@@ -16,6 +16,7 @@
 #import "WiaAccessToken.h"
 #import "WiaLog.h"
 #import "WiaLocation.h"
+#import "WiaDeviceApiKeys.h"
 
 @protocol WiaClientDelegate <NSObject>
 
@@ -46,6 +47,7 @@
 @property (nonatomic, readwrite, nullable) NSString *mqttApiPort;
 @property (nonatomic, readwrite) BOOL mqttApiSecure;
 
+@property (nonatomic, strong, nullable) MQTTCFSocketTransport *mqttTransport;
 @property (nonatomic, strong, nullable) MQTTSession *mqttSession;
 
 @property (nonatomic, strong, nullable) NSDictionary *clientInfo;
@@ -76,6 +78,8 @@
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 -(void)listDevices:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable devices, NSNumber * _Nullable count))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)retrieveDeviceApiKeys:(nonnull NSString *)device success:(nullable void (^)(WiaDeviceApiKeys * _Nullable apiKeys))success
+              failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Events
 -(void)publishEvent:(nonnull NSDictionary *)event success:(nullable void (^)(WiaEvent * _Nullable event))success

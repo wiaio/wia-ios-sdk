@@ -14,7 +14,7 @@
 @property (nonatomic, copy, nullable) NSString *device;
 @property (nonatomic, copy, nullable) NSString *level;
 @property (nonatomic, copy, nullable) NSString *message;
-@property (nonatomic, copy, nullable) NSObject *logData;
+@property (nonatomic, copy, nullable) NSObject *data;
 @property (nonatomic, copy, nullable) NSDate *timestamp;
 
 - (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dict;

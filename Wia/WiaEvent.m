@@ -10,7 +10,7 @@
 
 @implementation WiaEvent
 
-@synthesize id, device, name, eventData, timestamp;
+@synthesize id, device, name, data, file, timestamp;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -18,7 +18,10 @@
         self.id = [dict objectForKey:@"id"];
         self.device = [dict objectForKey:@"device"];
         self.name = [dict objectForKey:@"name"];
-        self.eventData = [dict objectForKey:@"data"];
+        self.data = [dict objectForKey:@"data"];
+        if ([dict objectForKey:@"file"]) {
+            self.file = [[WiaEventFile alloc] initWithDictionary:[dict objectForKey:@"file"]];
+        }
         if ([dict objectForKey:@"timestamp"]) {
             NSTimeInterval seconds = [[dict objectForKey:@"timestamp"] doubleValue] / 1000;
             self.timestamp =  [NSDate dateWithTimeIntervalSince1970:seconds];
@@ -35,7 +38,8 @@
         [copy setId:self.id];
         [copy setDevice:self.device];
         [copy setName:self.name];
-        [copy setEventData:self.eventData];
+        [copy setData:self.data];
+        [copy setFile:self.file];
         [copy setTimestamp:self.timestamp];
     }
     

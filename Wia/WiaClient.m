@@ -22,7 +22,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 @implementation WiaClient
 
-@synthesize delegate, publicKey, secretKey, mqttSession, clientInfo, restApiProtocol, restApiHost, restApiPort, restApiVersion, mqttApiProtocol, mqttApiHost, mqttApiPort, mqttApiSecure;
+@synthesize delegate, publicKey, secretKey = _secretKey, mqttTransport, mqttSession, clientInfo, restApiProtocol, restApiHost, restApiPort, restApiVersion, mqttApiProtocol, mqttApiHost, mqttApiPort, mqttApiSecure;
 
 +(instancetype)sharedInstance
 {
@@ -78,6 +78,13 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }
 }
 
+-(void)setSecretKey:(NSString *)secretKey {
+    if (![_secretKey isEqualToString:secretKey]) {
+        _secretKey = secretKey;
+        [self getWiaClientInfo];
+    }
+}
+
 -(void)reset {
     self.restApiProtocol = DEFAULT_REST_API_PROTOCOL;
     self.restApiHost = DEFAULT_REST_API_HOST;
@@ -111,16 +118,25 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 // Stream
 -(void)connectToStream {
+    if (!self.mqttTransport) {
+        self.mqttTransport = [[MQTTCFSocketTransport alloc] init];
+    }
+    
     if (!self.mqttSession) {
         self.mqttSession = [[MQTTSession alloc] init];
     }
     
     NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
 
+    self.mqttTransport.host = self.mqttApiHost;
+    self.mqttTransport.port = [[formatter numberFromString:self.mqttApiPort] unsignedShortValue];
+    self.mqttTransport.tls = self.mqttApiSecure;
+    
+    [self.mqttSession setTransport:self.mqttTransport];
     [self.mqttSession setDelegate:self];
     [self.mqttSession setUserName:self.secretKey];
     [self.mqttSession setPassword:@" "];
-    [self.mqttSession connectAndWaitToHost:self.mqttApiHost port:[[formatter numberFromString:self.mqttApiPort] unsignedShortValue] usingSSL:self.mqttApiSecure];
+    [self.mqttSession connectAndWaitTimeout:30];
 }
 
 -(void)disconnectFromStream {
@@ -227,19 +243,38 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }];
 }
 
+-(void)retrieveDeviceApiKeys:(NSString *)device success:(void (^)(WiaDeviceApiKeys *))success failure:(void (^)(NSError *))failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/devices/%@/apiKeys", [self getRestApiEndpoint], device] parameters:nil progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
+        if (success) {
+            success([[WiaDeviceApiKeys alloc] initWithDictionary:responseObject]);
+        }
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 // Events
 -(void)publishEvent:(nonnull NSDictionary *)event success:(nullable void (^)(WiaEvent * _Nullable event))success
             failure:(nullable void (^)(NSError * _Nullable error))failure {
     WiaLogger(@"Publishing event - %@", event);
 
     if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected && self.clientInfo) {
-        WiaLogger(@"Publishing event on stream.");
+        WiaLogger(@"Publishing event via mqtt.");
+        
         NSDictionary *device = [self.clientInfo objectForKey:@"device"];
         if (!device) {
             WiaLogger(@"Cannot send event. Not a device.");
             return;
         }
-        NSString *deviceId = [device objectForKey:@"deviceId"];
+        NSString *deviceId = [device objectForKey:@"id"];
         if (!deviceId) {
             WiaLogger(@"Cannot send event. deviceId not in client info.");
             return;
@@ -247,6 +282,8 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         WiaLogger(@"Sending event on stream with topic %@", [NSString stringWithFormat:@"devices/%@/events/%@", deviceId, [event objectForKey:@"name"]]);
         [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:event] onTopic:[NSString stringWithFormat:@"devices/%@/events/%@", deviceId, [event objectForKey:@"name"]] retain:YES qos:MQTTQosLevelAtLeastOnce];
     } else {
+        WiaLogger(@"Publishing event via rest.");
+
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -270,7 +307,8 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         if ([params objectForKey:@"name"]) {
             [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/%@", [params objectForKey:@"device"], [params objectForKey:@"name"]] atLevel:MQTTQosLevelAtLeastOnce];
         } else {
-            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
+            NSLog(@"%@", [NSString stringWithFormat:@"devices/%@/events/+", [params objectForKey:@"device"]]);
+            [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/events/#", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
         }
     }
 }
@@ -478,7 +516,6 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 - (void)connectionRefused:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Connection refused.");
-    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:error];
     }
@@ -487,7 +524,6 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 - (void)connectionClosed:(MQTTSession *)session {
     WiaLogger(@"Connection closed.");
-    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -496,7 +532,6 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 - (void)connectionError:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Connection error.");
-    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -505,7 +540,6 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 - (void)protocolError:(MQTTSession *)session error:(NSError *)error {
     WiaLogger(@"Protocol error.");
-    self.clientInfo = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
@@ -598,6 +632,8 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 
 - (void)sending:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
     WiaLogger(@"sending.");
+    if (data)
+        WiaLogger(@"data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 }
 
 - (void)received:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
