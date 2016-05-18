@@ -58,7 +58,6 @@
                                                } success:nil failure:nil];
 }
 
-
 -(void)newEvent:(WiaEvent *)event {
     NSLog(@"Got a new event");
     NSLog(@"%@", event.data);

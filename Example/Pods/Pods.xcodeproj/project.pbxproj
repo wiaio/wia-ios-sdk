@@ -79,6 +79,8 @@
 		48684B9AE80D6952C1E7C8C2B3455538 /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A3B3889C64A00017C558E69E94C4999 /* CocoaLumberjack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48DBCC9DF0FAB63C5B1CAD6D7E96B6C6 /* MQTTCFSocketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15384F378C9F236D9C99EAF0FEC747 /* MQTTCFSocketDecoder.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		49E5E61380A9BF1B698B37EA8AF64983 /* MQTTTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AA234BB006BE6FAD0B17FF425C22635 /* MQTTTransport.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		4A5E3DE11CECF67900534E49 /* WiaFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E3DDF1CECF67900534E49 /* WiaFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A5E3DE21CECF67900534E49 /* WiaFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5E3DE01CECF67900534E49 /* WiaFunction.m */; };
 		4A687FB21CEBC4CD0021926C /* WiaLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A687FB01CEBC4CD0021926C /* WiaLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A687FB31CEBC4CD0021926C /* WiaLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A687FB11CEBC4CD0021926C /* WiaLog.m */; };
 		4A687FB61CEC91B20021926C /* WiaEventFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A687FB41CEC91B20021926C /* WiaEventFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -439,6 +441,8 @@
 		465F9379159452703539B7D799964CC5 /* EXPMatchers+beGreaterThanOrEqualTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beGreaterThanOrEqualTo.m"; path = "Expecta/Matchers/EXPMatchers+beGreaterThanOrEqualTo.m"; sourceTree = "<group>"; };
 		4799432C1F86BE53086870DCFF7DD8E6 /* MQTTCFSocketTransport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MQTTCFSocketTransport.h; path = MQTTClient/MQTTClient/MQTTCFSocketTransport.h; sourceTree = "<group>"; };
 		47A14A84F346CA2986C584F35E958446 /* Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Expecta.h; path = Expecta/Expecta.h; sourceTree = "<group>"; };
+		4A5E3DDF1CECF67900534E49 /* WiaFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaFunction.h; sourceTree = "<group>"; };
+		4A5E3DE01CECF67900534E49 /* WiaFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaFunction.m; sourceTree = "<group>"; };
 		4A687FB01CEBC4CD0021926C /* WiaLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaLog.h; sourceTree = "<group>"; };
 		4A687FB11CEBC4CD0021926C /* WiaLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaLog.m; sourceTree = "<group>"; };
 		4A687FB41CEC91B20021926C /* WiaEventFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaEventFile.h; sourceTree = "<group>"; };
@@ -828,6 +832,8 @@
 				004EE925FE64C5B6CE17312232B2A4CA /* WiaEvent.m */,
 				4A687FB41CEC91B20021926C /* WiaEventFile.h */,
 				4A687FB51CEC91B20021926C /* WiaEventFile.m */,
+				4A5E3DDF1CECF67900534E49 /* WiaFunction.h */,
+				4A5E3DE01CECF67900534E49 /* WiaFunction.m */,
 				4A687FB81CEC95C30021926C /* WiaLocation.h */,
 				4A687FB91CEC95C30021926C /* WiaLocation.m */,
 				459C980A587A8CC10CA60722267AD5BC /* WiaUser.h */,
@@ -1286,6 +1292,7 @@
 				4A687FBE1CEC9F030021926C /* WiaDeviceApiKeys.h in Headers */,
 				ABB68C4D58A64FA19E40A3CF5D761815 /* WiaEvent.h in Headers */,
 				4A687FB21CEBC4CD0021926C /* WiaLog.h in Headers */,
+				4A5E3DE11CECF67900534E49 /* WiaFunction.h in Headers */,
 				DAD3221B4225BACEED169C1B497DA7C7 /* WiaUser.h in Headers */,
 				9DB9591C791E0BD8CD0F6D8C1B221C97 /* WiaUtils.h in Headers */,
 			);
@@ -1730,6 +1737,7 @@
 				9CFB49B2887E5D9C3FC27370847B0450 /* Wia-dummy.m in Sources */,
 				C8D1003D063822348E861DF44BB663C0 /* WiaAccessToken.m in Sources */,
 				DBFC4B605523AF4CE3D81481CB12B341 /* WiaClient.m in Sources */,
+				4A5E3DE21CECF67900534E49 /* WiaFunction.m in Sources */,
 				7A84469348CE2BED50F9B2DA631C2D33 /* WiaDevice.m in Sources */,
 				AD038D8CC25426002AEF766B39209EFE /* WiaEvent.m in Sources */,
 				31666BC5FDBE60F40AC51BEF2B9796C8 /* WiaUser.m in Sources */,

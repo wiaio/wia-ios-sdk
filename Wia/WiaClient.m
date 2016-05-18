@@ -440,53 +440,63 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }];
 }
 
-//-(void)listFunctions:(NSDictionary *)params success:(void (^)(NSArray *functions))success
-//           failure:(void (^)(NSError *error))failure {
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
-//    
-//    [manager GET:[NSString stringWithFormat:@"%@/functions", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
-//        if (success) {
-//            NSMutableArray *functions = [[NSMutableArray alloc] init];
-//            for (id func in [responseObject objectForKey:@"functions"]) {
-//                WiaFunction *f = [[WiaFunction alloc] initWithDictionary:func];
-//                [functions addObject:f];
-//            }
-//            success(functions);
-//        }
-//    } failure:^(NSURLSessionTask *operation, NSError *error) {
-//        WiaLogger(@"Error: %@", error);
-//        if (failure) {
-//            failure(error);
-//        }
-//    }];
-//}
-//
-//-(void)callFunction:(nullable NSDictionary *)params {
-//    if (!params)
-//        return;
-//    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected) {
-//        WiaLogger(@"Calling function over stream.");
-//        NSString *topic = [NSString stringWithFormat:@"devices/%@/functions/%@/call", [params objectForKey:@"deviceId"], [params objectForKey:@"name"]];
-//        WiaLogger([NSString stringWithFormat:@"Publishing to topic %@", topic]);
-//        WiaLogger(@"%@", params);
-//        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:params] onTopic:topic retain:NO qos:MQTTQosLevelAtLeastOnce];
-//    } else {
-//        WiaLogger(@"Calling function over REST.");
-//        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
-//        
-//        [manager POST:[NSString stringWithFormat:@"%@/functions/call", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
-//            WiaLogger(@"Success");
-//        } failure:^(NSURLSessionTask *operation, NSError *error) {
-//            WiaLogger(@"Error: %@", error);
-//        }];
-//    }
-//}
+// Functions
+-(void)listFunctions:(NSDictionary *)params success:(void (^)(NSArray *functions, NSNumber *count))success
+           failure:(void (^)(NSError *error))failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[NSString stringWithFormat:@"%@/functions", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+        if (success) {
+            NSMutableArray *functions = [[NSMutableArray alloc] init];
+            for (id func in [responseObject objectForKey:@"functions"]) {
+                WiaFunction *f = [[WiaFunction alloc] initWithDictionary:func];
+                [functions addObject:f];
+            }
+            success(functions, [responseObject objectForKey:@"count"]);
+        }
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        WiaLogger(@"Error: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+-(void)callFunction:(nullable NSDictionary *)params {
+    if (!params)
+        return;
+    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected) {
+        WiaLogger(@"Calling function over stream.");
+        NSString *topic = [NSString stringWithFormat:@"devices/%@/functions/%@/call", [params objectForKey:@"device"], [params objectForKey:@"id"]];
+        WiaLogger([NSString stringWithFormat:@"Publishing to topic %@", topic]);
+        WiaLogger(@"%@", params);
+        
+        NSError *err;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [self.mqttSession publishAndWaitData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                     onTopic:topic
+                                      retain:NO
+                                         qos:MQTTQosLevelAtLeastOnce];
+
+        [self.mqttSession publishData:[NSKeyedArchiver archivedDataWithRootObject:params] onTopic:topic retain:NO qos:MQTTQosLevelAtLeastOnce];
+    } else {
+        WiaLogger(@"Calling function over REST.");
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:[NSString stringWithFormat:@"%@/functions/%@/call", [self getRestApiEndpoint], [params objectForKey:@"id"]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+            WiaLogger(@"Success");
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+        }];
+    }
+}
 
 // Users
 -(void)getUserMe:(void (^)(WiaUser *user))success

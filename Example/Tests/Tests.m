@@ -313,7 +313,7 @@ describe(@"logs", ^{
 });
 
 describe(@"locations", ^{
-    it(@"lists logs", ^{
+    it(@"lists locations", ^{
         waitUntil(^(DoneCallback done) {
             [[WiaClient sharedInstance] createDevice:
              @{
@@ -337,5 +337,32 @@ describe(@"locations", ^{
         });
     });
 });
+
+describe(@"functions", ^{
+    it(@"lists functions", ^{
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] createDevice:
+             @{
+               @"name": @"testDevice"
+               } success:^(WiaDevice * _Nullable device) {
+                   XCTAssertNotNil(device);
+                   
+                   [[WiaClient sharedInstance] listFunctions:
+                    @{
+                      @"device": device.id
+                      } success:^(NSArray * _Nullable locations, NSNumber * _Nullable count) {
+                          XCTAssertNotNil(locations);
+                          XCTAssertNotNil(count);
+                          done();
+                      } failure:^(NSError * _Nullable error) {
+                          XCTAssertNil(error);
+                      }];
+               } failure:^(NSError * _Nullable error) {
+                   XCTAssertNil(error);
+               }];
+        });
+    });
+});
+
 
 SpecEnd

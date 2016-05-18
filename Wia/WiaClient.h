@@ -17,6 +17,7 @@
 #import "WiaLog.h"
 #import "WiaLocation.h"
 #import "WiaDeviceApiKeys.h"
+#import "WiaFunction.h"
 
 @protocol WiaClientDelegate <NSObject>
 
@@ -104,6 +105,10 @@
 -(void)unsubscribeFromLocations:(nonnull NSDictionary *)params;
 -(void)listLocations:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable locations, NSNumber * _Nullable count))success
         failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+// Functions
+-(void)listFunctions:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable functions, NSNumber * _Nullable count))success
+             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 // Users
 -(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success
