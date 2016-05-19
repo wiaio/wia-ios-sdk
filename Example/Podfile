@@ -1,18 +1,16 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '9.0'
+platform :ios, '8.0'
 inhibit_all_warnings!
 use_frameworks!
 
 target 'Wia_Example' do
   pod "Wia", :path => "../"
   pod 'AFNetworking', '~> 3.1'
-
+  pod 'MQTTClient', '~> 0.7.7'
 
     target 'Wia_Tests' do
         pod "Wia", :path => "../"
-        pod 'AFNetworking', '~> 3.1'
-        pod 'MQTTClient', '~> 0.7'
 
         pod 'Specta'
         pod 'Expecta'

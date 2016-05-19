@@ -19,14 +19,14 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/wiaio/wia-ios-sdk.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/wiaio'
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.public_header_files = 'Wia/*.h'
   s.source_files = 'Wia/*.{h,m}'
 
   s.dependency 'AFNetworking', '~> 3.1'
-  s.dependency 'MQTTClient', '~> 0.7'
+  s.dependency 'MQTTClient', '~> 0.7.7'
 
   # s.frameworks = 'UIKit', 'MapKit'
 end

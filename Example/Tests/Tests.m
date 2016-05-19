@@ -6,6 +6,7 @@
 //  Copyright © 2016 Wia. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "Wia.h"
 #import <Specta/Specta.h>
 
@@ -110,7 +111,7 @@ describe(@"devices", ^{
             [[WiaClient sharedInstance] createDevice:@{@"name": @"testDeviceOne"} success:^(WiaDevice * _Nullable createdDevice) {
                XCTAssertNotNil(createdDevice);
                [[WiaClient sharedInstance] deleteDevice:createdDevice.id
-                    success:^(BOOL * _Nullable deleted) {
+                    success:^(BOOL deleted) {
                         [[WiaClient sharedInstance] retrieveDevice:createdDevice.id
                              success:^(WiaDevice * _Nullable retrievedDevice) {
                                  XCTAssertNil(retrievedDevice);

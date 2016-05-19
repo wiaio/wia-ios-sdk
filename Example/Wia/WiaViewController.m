@@ -19,27 +19,27 @@
     [super viewDidLoad];
     
     [WiaClient debug:YES];
-    
-    [[WiaClient sharedInstance] init];
-    
-    [[WiaClient sharedInstance] setDelegate:self];
-
-    [[WiaClient sharedInstance] setSecretKey:@"secret_key"];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        NSLog(@"WiaStreamConnected");
-        [NSTimer scheduledTimerWithTimeInterval:1.0
-                                         target:self
-                                       selector:@selector(onTick:)
-                                       userInfo:nil
-                                        repeats:YES];
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        NSLog(@"WiaStreamConnectionClose");
-    }];
+//    
+//    [[WiaClient sharedInstance] init];
+//    
+//    [[WiaClient sharedInstance] setDelegate:self];
 //
-    [[WiaClient sharedInstance] connectToStream];
+//    [[WiaClient sharedInstance] setSecretKey:@"secret_key"];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+//        NSLog(@"WiaStreamConnected");
+//        [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                         target:self
+//                                       selector:@selector(onTick:)
+//                                       userInfo:nil
+//                                        repeats:YES];
+//    }];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+//        NSLog(@"WiaStreamConnectionClose");
+//    }];
+////
+//    [[WiaClient sharedInstance] connectToStream];
 }
 
 -(void)onTick:(NSTimer*)timer

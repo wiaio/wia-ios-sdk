@@ -18,7 +18,7 @@ static NSString *const DEFAULT_REST_API_VERSION = @"v1";
 static NSString *const DEFAULT_MQTT_API_PROTOCOL = @"mqtts";
 static NSString *const DEFAULT_MQTT_API_HOST = @"api.wia.io";
 static NSString *const DEFAULT_MQTT_API_PORT = @"8883";
-static BOOL *const DEFAULT_MQTT_API_SECURE = true;
+static BOOL const DEFAULT_MQTT_API_SECURE = true;
 
 @implementation WiaClient
 
@@ -153,7 +153,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager POST:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:device success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:device progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             success([[WiaDevice alloc] initWithDictionary:responseObject]);
         }
@@ -201,7 +201,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     }];
 }
 
--(void)deleteDevice:(NSString *)deviceId success:(void (^)(BOOL *))success failure:(void (^)(NSError *))failure {
+-(void)deleteDevice:(NSString *)deviceId success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -226,7 +226,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/devices", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             NSMutableArray *devices = [[NSMutableArray alloc] init];
             for (id device in [responseObject objectForKey:@"devices"]) {
@@ -297,7 +297,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
         
-        [manager POST:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:event success:^(NSURLSessionTask *operation, id responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:event progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
             if (success) {
                 success([[WiaEvent alloc] initWithDictionary:responseObject]);
             }
@@ -338,7 +338,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/events", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             WiaLogger(responseObject);
             NSMutableArray *events = [[NSMutableArray alloc] init];
@@ -357,6 +357,55 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 }
 
 // Logs
+-(void)publishLog:(nonnull NSDictionary *)log success:(nullable void (^)(WiaLog * _Nullable log))success
+             failure:(nullable void (^)(NSError * _Nullable error))failure {
+    WiaLogger(@"Publishing log - %@", log);
+    
+    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected && self.clientInfo) {
+        WiaLogger(@"Publishing log via mqtt.");
+        
+        NSDictionary *device = [self.clientInfo objectForKey:@"device"];
+        if (!device) {
+            WiaLogger(@"Cannot send event. Not a device.");
+            return;
+        }
+        NSString *deviceId = [device objectForKey:@"id"];
+        if (!deviceId) {
+            WiaLogger(@"Cannot send event. deviceId not in client info.");
+            return;
+        }
+        
+        NSString *topic = [NSString stringWithFormat:@"devices/%@/logs/%@", deviceId, [log objectForKey:@"level"]];
+        WiaLogger(@"Sending log on stream with topic %@", topic);
+        
+        NSError *err;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:log options:0 error:&err];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [self.mqttSession publishAndWaitData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                     onTopic:topic
+                                      retain:NO
+                                         qos:MQTTQosLevelAtLeastOnce];
+    } else {
+        WiaLogger(@"Publishing log via rest.");
+        
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:log progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
+            if (success) {
+                success([[WiaLog alloc] initWithDictionary:responseObject]);
+            }
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+            if (failure) {
+                failure(error);
+            }
+        }];
+    }
+}
+
 -(void)subscribeToLogs:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"device"]) {
         if ([params objectForKey:@"level"]) {
@@ -384,12 +433,12 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/logs", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             WiaLogger(responseObject);
             NSMutableArray *logs = [[NSMutableArray alloc] init];
             for (id logObj in [responseObject objectForKey:@"logs"]) {
-                WiaLog *l = [[WiaEvent alloc] initWithDictionary:logObj];
+                WiaLog *l = [[WiaLog alloc] initWithDictionary:logObj];
                 [logs addObject:l];
             }
             success(logs, [responseObject objectForKey:@"count"]);
@@ -403,6 +452,55 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 }
 
 // Locations
+-(void)publishLocation:(nonnull NSDictionary *)location success:(nullable void (^)(WiaLocation * _Nullable sensor))success
+             failure:(nullable void (^)(NSError * _Nullable error))failure {
+    WiaLogger(@"Publishing location - %@", location);
+    
+    if (self.mqttSession && self.mqttSession.status == MQTTSessionStatusConnected && self.clientInfo) {
+        WiaLogger(@"Publishing location via mqtt.");
+        
+        NSDictionary *device = [self.clientInfo objectForKey:@"device"];
+        if (!device) {
+            WiaLogger(@"Cannot send event. Not a device.");
+            return;
+        }
+        NSString *deviceId = [device objectForKey:@"id"];
+        if (!deviceId) {
+            WiaLogger(@"Cannot send event. deviceId not in client info.");
+            return;
+        }
+        
+        NSString *topic = [NSString stringWithFormat:@"devices/%@/locations", deviceId];
+        WiaLogger(@"Sending location on stream with topic %@", topic);
+        
+        NSError *err;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:location options:0 error:&err];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [self.mqttSession publishAndWaitData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                     onTopic:topic
+                                      retain:NO
+                                         qos:MQTTQosLevelAtLeastOnce];
+    } else {
+        WiaLogger(@"Publishing location via rest.");
+        
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:[NSString stringWithFormat:@"%@/locations", [self getRestApiEndpoint]] parameters:location progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
+            if (success) {
+                success([[WiaLocation alloc] initWithDictionary:responseObject]);
+            }
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            WiaLogger(@"Error: %@", error);
+            if (failure) {
+                failure(error);
+            }
+        }];
+    }
+}
+
 -(void)subscribeToLocations:(nonnull NSDictionary *)params {
     if ([params objectForKey:@"device"]) {
         [self.mqttSession subscribeToTopic:[NSString stringWithFormat:@"devices/%@/locations", [params objectForKey:@"device"]] atLevel:MQTTQosLevelAtLeastOnce];
@@ -422,12 +520,12 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/locations", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/locations", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             WiaLogger(responseObject);
             NSMutableArray *locations = [[NSMutableArray alloc] init];
             for (id locationObj in [responseObject objectForKey:@"locations"]) {
-                WiaLog *l = [[WiaEvent alloc] initWithDictionary:locationObj];
+                WiaLocation *l = [[WiaLocation alloc] initWithDictionary:locationObj];
                 [locations addObject:l];
             }
             success(locations, [responseObject objectForKey:@"count"]);
@@ -477,9 +575,9 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
         
-        [manager POST:[NSString stringWithFormat:@"%@/sensors", [self getRestApiEndpoint]] parameters:sensor success:^(NSURLSessionTask *operation, id responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/sensors", [self getRestApiEndpoint]] parameters:sensor progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
             if (success) {
-                success([[WiaEvent alloc] initWithDictionary:responseObject]);
+                success([[WiaSensor alloc] initWithDictionary:responseObject]);
             }
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             WiaLogger(@"Error: %@", error);
@@ -518,12 +616,12 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/sensors", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/sensors", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             WiaLogger(responseObject);
             NSMutableArray *sensors = [[NSMutableArray alloc] init];
             for (id sensorObj in [responseObject objectForKey:@"sensors"]) {
-                WiaSensor *s = [[WiaEvent alloc] initWithDictionary:sensorObj];
+                WiaSensor *s = [[WiaSensor alloc] initWithDictionary:sensorObj];
                 [sensors addObject:s];
             }
             success(sensors, [responseObject objectForKey:@"count"]);
@@ -544,7 +642,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/functions", [self getRestApiEndpoint]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/functions", [self getRestApiEndpoint]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
         if (success) {
             NSMutableArray *functions = [[NSMutableArray alloc] init];
             for (id func in [responseObject objectForKey:@"functions"]) {
@@ -584,7 +682,7 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.secretKey] forHTTPHeaderField:@"Authorization"];
         
-        [manager POST:[NSString stringWithFormat:@"%@/functions/%@/call", [self getRestApiEndpoint], [params objectForKey:@"id"]] parameters:params success:^(NSURLSessionTask *operation, id responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/functions/%@/call", [self getRestApiEndpoint], [params objectForKey:@"id"]] parameters:params progress:nil success:^(NSURLSessionTask *operation, id responseObject) {
             WiaLogger(@"Success");
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             WiaLogger(@"Error: %@", error);
@@ -745,11 +843,13 @@ static BOOL *const DEFAULT_MQTT_API_SECURE = true;
 - (void)sending:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
     WiaLogger(@"sending.");
     if (data)
-        WiaLogger(@"data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        WiaLogger(@"sending data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 }
 
 - (void)received:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
     WiaLogger(@"received.");
+    if (data)
+        WiaLogger(@"received data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 }
 
 @end
