@@ -24,7 +24,7 @@
     
     [[WiaClient sharedInstance] setDelegate:self];
 
-    [[WiaClient sharedInstance] setSecretKey:@"secret key"];
+    [[WiaClient sharedInstance] setSecretKey:@"secret_key"];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"WiaStreamConnected");
@@ -38,7 +38,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"WiaStreamConnectionClose");
     }];
-    
+//
     [[WiaClient sharedInstance] connectToStream];
 }
 

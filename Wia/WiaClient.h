@@ -18,6 +18,7 @@
 #import "WiaLocation.h"
 #import "WiaDeviceApiKeys.h"
 #import "WiaFunction.h"
+#import "WiaSensor.h"
 
 @protocol WiaClientDelegate <NSObject>
 
@@ -106,9 +107,18 @@
 -(void)listLocations:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable locations, NSNumber * _Nullable count))success
         failure:(nullable void (^)(NSError * _Nullable error))failure;
 
+// Sensors
+-(void)publishSensor:(nonnull NSDictionary *)sensor success:(nullable void (^)(WiaSensor * _Nullable sensor))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)subscribeToSensors:(nonnull NSDictionary *)params;
+-(void)unsubscribeFromSensors:(nonnull NSDictionary *)params;
+-(void)listSensors:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable sensors, NSNumber * _Nullable count))success
+          failure:(nullable void (^)(NSError * _Nullable error))failure;
+
 // Functions
 -(void)listFunctions:(nullable NSDictionary *)params success:(nullable void (^)(NSArray * _Nullable functions, NSNumber * _Nullable count))success
              failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)callFunction:(nullable NSDictionary *)params;
 
 // Users
 -(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success

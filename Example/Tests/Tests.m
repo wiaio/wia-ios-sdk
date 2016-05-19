@@ -338,6 +338,32 @@ describe(@"locations", ^{
     });
 });
 
+describe(@"sensors", ^{
+    it(@"lists sensors", ^{
+        waitUntil(^(DoneCallback done) {
+            [[WiaClient sharedInstance] createDevice:
+             @{
+               @"name": @"testDevice"
+               } success:^(WiaDevice * _Nullable device) {
+                   XCTAssertNotNil(device);
+                   
+                   [[WiaClient sharedInstance] listSensors:
+                    @{
+                      @"device": device.id
+                      } success:^(NSArray * _Nullable sensors, NSNumber * _Nullable count) {
+                          XCTAssertNotNil(sensors);
+                          XCTAssertNotNil(count);
+                          done();
+                      } failure:^(NSError * _Nullable error) {
+                          XCTAssertNil(error);
+                      }];
+               } failure:^(NSError * _Nullable error) {
+                   XCTAssertNil(error);
+               }];
+        });
+    });
+});
+
 describe(@"functions", ^{
     it(@"lists functions", ^{
         waitUntil(^(DoneCallback done) {

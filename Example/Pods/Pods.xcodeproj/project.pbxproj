@@ -79,6 +79,8 @@
 		48684B9AE80D6952C1E7C8C2B3455538 /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A3B3889C64A00017C558E69E94C4999 /* CocoaLumberjack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48DBCC9DF0FAB63C5B1CAD6D7E96B6C6 /* MQTTCFSocketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15384F378C9F236D9C99EAF0FEC747 /* MQTTCFSocketDecoder.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		49E5E61380A9BF1B698B37EA8AF64983 /* MQTTTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AA234BB006BE6FAD0B17FF425C22635 /* MQTTTransport.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		4A258F051CEDA4310090D29E /* WiaSensor.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A258F031CEDA4310090D29E /* WiaSensor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A258F061CEDA4310090D29E /* WiaSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A258F041CEDA4310090D29E /* WiaSensor.m */; };
 		4A5E3DE11CECF67900534E49 /* WiaFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E3DDF1CECF67900534E49 /* WiaFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A5E3DE21CECF67900534E49 /* WiaFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5E3DE01CECF67900534E49 /* WiaFunction.m */; };
 		4A687FB21CEBC4CD0021926C /* WiaLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A687FB01CEBC4CD0021926C /* WiaLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -441,6 +443,8 @@
 		465F9379159452703539B7D799964CC5 /* EXPMatchers+beGreaterThanOrEqualTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beGreaterThanOrEqualTo.m"; path = "Expecta/Matchers/EXPMatchers+beGreaterThanOrEqualTo.m"; sourceTree = "<group>"; };
 		4799432C1F86BE53086870DCFF7DD8E6 /* MQTTCFSocketTransport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MQTTCFSocketTransport.h; path = MQTTClient/MQTTClient/MQTTCFSocketTransport.h; sourceTree = "<group>"; };
 		47A14A84F346CA2986C584F35E958446 /* Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Expecta.h; path = Expecta/Expecta.h; sourceTree = "<group>"; };
+		4A258F031CEDA4310090D29E /* WiaSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaSensor.h; sourceTree = "<group>"; };
+		4A258F041CEDA4310090D29E /* WiaSensor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaSensor.m; sourceTree = "<group>"; };
 		4A5E3DDF1CECF67900534E49 /* WiaFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaFunction.h; sourceTree = "<group>"; };
 		4A5E3DE01CECF67900534E49 /* WiaFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaFunction.m; sourceTree = "<group>"; };
 		4A687FB01CEBC4CD0021926C /* WiaLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaLog.h; sourceTree = "<group>"; };
@@ -836,6 +840,8 @@
 				4A5E3DE01CECF67900534E49 /* WiaFunction.m */,
 				4A687FB81CEC95C30021926C /* WiaLocation.h */,
 				4A687FB91CEC95C30021926C /* WiaLocation.m */,
+				4A258F031CEDA4310090D29E /* WiaSensor.h */,
+				4A258F041CEDA4310090D29E /* WiaSensor.m */,
 				459C980A587A8CC10CA60722267AD5BC /* WiaUser.h */,
 				86795851024F7940D2D446DFAAB3D99A /* WiaUser.m */,
 				4A687FB01CEBC4CD0021926C /* WiaLog.h */,
@@ -1286,6 +1292,7 @@
 				4A687FB61CEC91B20021926C /* WiaEventFile.h in Headers */,
 				072E6594E297D308525B8FB004E298A6 /* Wia.h in Headers */,
 				4A687FBA1CEC95C30021926C /* WiaLocation.h in Headers */,
+				4A258F051CEDA4310090D29E /* WiaSensor.h in Headers */,
 				9504DDA6F4FBFBAC090478BAE7C1E125 /* WiaAccessToken.h in Headers */,
 				8DE3E2F99AD1F837C65D9F4C86B87497 /* WiaClient.h in Headers */,
 				6C1C32A206C0D3E4706099C167B79CDF /* WiaDevice.h in Headers */,
@@ -1737,6 +1744,7 @@
 				9CFB49B2887E5D9C3FC27370847B0450 /* Wia-dummy.m in Sources */,
 				C8D1003D063822348E861DF44BB663C0 /* WiaAccessToken.m in Sources */,
 				DBFC4B605523AF4CE3D81481CB12B341 /* WiaClient.m in Sources */,
+				4A258F061CEDA4310090D29E /* WiaSensor.m in Sources */,
 				4A5E3DE21CECF67900534E49 /* WiaFunction.m in Sources */,
 				7A84469348CE2BED50F9B2DA631C2D33 /* WiaDevice.m in Sources */,
 				AD038D8CC25426002AEF766B39209EFE /* WiaEvent.m in Sources */,
