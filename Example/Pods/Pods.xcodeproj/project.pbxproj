@@ -86,6 +86,56 @@
 		48684B9AE80D6952C1E7C8C2B3455538 /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A3B3889C64A00017C558E69E94C4999 /* CocoaLumberjack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48DBCC9DF0FAB63C5B1CAD6D7E96B6C6 /* MQTTCFSocketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15384F378C9F236D9C99EAF0FEC747 /* MQTTCFSocketDecoder.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		49E5E61380A9BF1B698B37EA8AF64983 /* MQTTTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AA234BB006BE6FAD0B17FF425C22635 /* MQTTTransport.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		4AA332C81CEE1CC800F7D84A /* Wia.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DAC63E65A2FA95D501A46A1543CA19C /* Wia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332C91CEE1CC900F7D84A /* Wia.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DAC63E65A2FA95D501A46A1543CA19C /* Wia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CA1CEE1CD600F7D84A /* WiaAccessToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 7054A5F0F0604FAA69C58E4EC74FCE66 /* WiaAccessToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CB1CEE1CD600F7D84A /* WiaAccessToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 7054A5F0F0604FAA69C58E4EC74FCE66 /* WiaAccessToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CC1CEE1CEF00F7D84A /* WiaClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 97CE54AF9B8BEF891BA808A2F45A6FE3 /* WiaClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CD1CEE1CEF00F7D84A /* WiaClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 97CE54AF9B8BEF891BA808A2F45A6FE3 /* WiaClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CE1CEE1D0400F7D84A /* WiaDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 20869D7816DC5E27FC934EC316AE784E /* WiaDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332CF1CEE1D0400F7D84A /* WiaDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 20869D7816DC5E27FC934EC316AE784E /* WiaDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D11CEE1D1100F7D84A /* WiaDeviceApiKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = F497569F81FC7100E259CE61C11E0C31 /* WiaDeviceApiKeys.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D21CEE1D1100F7D84A /* WiaDeviceApiKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = F497569F81FC7100E259CE61C11E0C31 /* WiaDeviceApiKeys.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D31CEE1D1800F7D84A /* WiaEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = F7DA3EA99F84030821FCE2530544A8B0 /* WiaEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D41CEE1D1800F7D84A /* WiaEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = F7DA3EA99F84030821FCE2530544A8B0 /* WiaEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D51CEE1D1D00F7D84A /* WiaEventFile.h in Headers */ = {isa = PBXBuildFile; fileRef = D8267BB2240E237E08A194C63CC21D95 /* WiaEventFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D61CEE1D1D00F7D84A /* WiaEventFile.h in Headers */ = {isa = PBXBuildFile; fileRef = D8267BB2240E237E08A194C63CC21D95 /* WiaEventFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D71CEE1D2300F7D84A /* WiaFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = ACD36CED8D9BB1C634A5F8C34EFB2005 /* WiaFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D81CEE1D2400F7D84A /* WiaFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = ACD36CED8D9BB1C634A5F8C34EFB2005 /* WiaFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332D91CEE1D2800F7D84A /* WiaLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = A03481322F615A0AD1399067C617A013 /* WiaLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DA1CEE1D2900F7D84A /* WiaLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = A03481322F615A0AD1399067C617A013 /* WiaLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DB1CEE1D2F00F7D84A /* WiaLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 8371BF32F7E65D6AA7748FDFD00E8EE2 /* WiaLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DC1CEE1D2F00F7D84A /* WiaLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 8371BF32F7E65D6AA7748FDFD00E8EE2 /* WiaLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DD1CEE1D3300F7D84A /* WiaSensor.h in Headers */ = {isa = PBXBuildFile; fileRef = FB98890176905A369D91C77E1FC5E1D9 /* WiaSensor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DE1CEE1D3400F7D84A /* WiaSensor.h in Headers */ = {isa = PBXBuildFile; fileRef = FB98890176905A369D91C77E1FC5E1D9 /* WiaSensor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332DF1CEE1D3900F7D84A /* WiaUser.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA7A4933449BBFDC826C4FB7FD30315 /* WiaUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332E01CEE1D3900F7D84A /* WiaUser.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA7A4933449BBFDC826C4FB7FD30315 /* WiaUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332E11CEE1D3E00F7D84A /* WiaUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E4155F83E0A0CC475D0D47E224054254 /* WiaUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332E21CEE1D3E00F7D84A /* WiaUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E4155F83E0A0CC475D0D47E224054254 /* WiaUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4AA332E31CEE1D4400F7D84A /* WiaAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = AD16B0662EF42E1E36F44F4302934911 /* WiaAccessToken.m */; };
+		4AA332E41CEE1D4400F7D84A /* WiaAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = AD16B0662EF42E1E36F44F4302934911 /* WiaAccessToken.m */; };
+		4AA332E51CEE1D4900F7D84A /* WiaClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 42500B09EF76155D9FB7EA4AFFCABDA8 /* WiaClient.m */; };
+		4AA332E61CEE1D4900F7D84A /* WiaClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 42500B09EF76155D9FB7EA4AFFCABDA8 /* WiaClient.m */; };
+		4AA332E71CEE1D4D00F7D84A /* WiaDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5F1B357920403CE958E731AC1101D4 /* WiaDevice.m */; };
+		4AA332E81CEE1D4D00F7D84A /* WiaDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5F1B357920403CE958E731AC1101D4 /* WiaDevice.m */; };
+		4AA332E91CEE1D5000F7D84A /* WiaDeviceApiKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 220B49EA18B314AFCC8C4A7E6E1E96DE /* WiaDeviceApiKeys.m */; };
+		4AA332EA1CEE1D5000F7D84A /* WiaDeviceApiKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 220B49EA18B314AFCC8C4A7E6E1E96DE /* WiaDeviceApiKeys.m */; };
+		4AA332EB1CEE1D5200F7D84A /* WiaEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2920CB9E02D28A1577F14FCE724397 /* WiaEvent.m */; };
+		4AA332EC1CEE1D5300F7D84A /* WiaEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2920CB9E02D28A1577F14FCE724397 /* WiaEvent.m */; };
+		4AA332ED1CEE1D5600F7D84A /* WiaEventFile.m in Sources */ = {isa = PBXBuildFile; fileRef = A81B1F34579C4C5CB10C60591976EECE /* WiaEventFile.m */; };
+		4AA332EE1CEE1D5600F7D84A /* WiaEventFile.m in Sources */ = {isa = PBXBuildFile; fileRef = A81B1F34579C4C5CB10C60591976EECE /* WiaEventFile.m */; };
+		4AA332EF1CEE1D5800F7D84A /* WiaFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 33D9C6A190A547CEDD62563B23489627 /* WiaFunction.m */; };
+		4AA332F01CEE1D5A00F7D84A /* WiaFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 33D9C6A190A547CEDD62563B23489627 /* WiaFunction.m */; };
+		4AA332F11CEE1D5C00F7D84A /* WiaLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = EE04EAD8B08553700BC8AA8756AF98B9 /* WiaLocation.m */; };
+		4AA332F21CEE1D5C00F7D84A /* WiaLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = EE04EAD8B08553700BC8AA8756AF98B9 /* WiaLocation.m */; };
+		4AA332F31CEE1D5F00F7D84A /* WiaLog.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA82DBF3BD8236F2663DD6A45AB72ED /* WiaLog.m */; };
+		4AA332F41CEE1D5F00F7D84A /* WiaLog.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA82DBF3BD8236F2663DD6A45AB72ED /* WiaLog.m */; };
+		4AA332F51CEE1D6100F7D84A /* WiaSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C9AD1CB7E85C3BB4E53B4BEC95E8AD /* WiaSensor.m */; };
+		4AA332F61CEE1D6200F7D84A /* WiaSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C9AD1CB7E85C3BB4E53B4BEC95E8AD /* WiaSensor.m */; };
+		4AA332F71CEE1D6400F7D84A /* WiaUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E9E3F8EA07580E65E0244BF687605 /* WiaUser.m */; };
+		4AA332F81CEE1D6400F7D84A /* WiaUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E9E3F8EA07580E65E0244BF687605 /* WiaUser.m */; };
+		4AA332FA1CEE1D6800F7D84A /* WiaUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A508643D52ECADD9AB4F951B856A9D5 /* WiaUtils.m */; };
+		4AA332FB1CEE1D6900F7D84A /* WiaUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A508643D52ECADD9AB4F951B856A9D5 /* WiaUtils.m */; };
 		4B1F1955E55877231C1963A0EF628A5A /* MQTTSSLSecurityPolicyTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF668C31880F9C253CE0B83EAA96D7F /* MQTTSSLSecurityPolicyTransport.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D099399F94AAD9151493AAD10D4A809 /* EXPMatchers+beGreaterThanOrEqualTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 465F9379159452703539B7D799964CC5 /* EXPMatchers+beGreaterThanOrEqualTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4ECA9BE68D373E094EFA019CC4EA1720 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C7725EB378A8777377DCA02A270AB2 /* CoreGraphics.framework */; };
@@ -1335,7 +1385,20 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA332E11CEE1D3E00F7D84A /* WiaUtils.h in Headers */,
+				4AA332DD1CEE1D3300F7D84A /* WiaSensor.h in Headers */,
+				4AA332CE1CEE1D0400F7D84A /* WiaDevice.h in Headers */,
+				4AA332D91CEE1D2800F7D84A /* WiaLocation.h in Headers */,
+				4AA332D11CEE1D1100F7D84A /* WiaDeviceApiKeys.h in Headers */,
+				4AA332CA1CEE1CD600F7D84A /* WiaAccessToken.h in Headers */,
+				4AA332DB1CEE1D2F00F7D84A /* WiaLog.h in Headers */,
+				4AA332D81CEE1D2400F7D84A /* WiaFunction.h in Headers */,
+				4AA332CD1CEE1CEF00F7D84A /* WiaClient.h in Headers */,
+				4AA332C81CEE1CC800F7D84A /* Wia.h in Headers */,
 				421C1E91068AC7082D9DE9FA3ADFB9D5 /* Pods-Wia_Example-umbrella.h in Headers */,
+				4AA332D31CEE1D1800F7D84A /* WiaEvent.h in Headers */,
+				4AA332DF1CEE1D3900F7D84A /* WiaUser.h in Headers */,
+				4AA332D61CEE1D1D00F7D84A /* WiaEventFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,7 +1501,20 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA332E21CEE1D3E00F7D84A /* WiaUtils.h in Headers */,
+				4AA332DE1CEE1D3400F7D84A /* WiaSensor.h in Headers */,
+				4AA332CF1CEE1D0400F7D84A /* WiaDevice.h in Headers */,
+				4AA332DA1CEE1D2900F7D84A /* WiaLocation.h in Headers */,
+				4AA332D21CEE1D1100F7D84A /* WiaDeviceApiKeys.h in Headers */,
+				4AA332CB1CEE1CD600F7D84A /* WiaAccessToken.h in Headers */,
+				4AA332DC1CEE1D2F00F7D84A /* WiaLog.h in Headers */,
+				4AA332D71CEE1D2300F7D84A /* WiaFunction.h in Headers */,
+				4AA332CC1CEE1CEF00F7D84A /* WiaClient.h in Headers */,
+				4AA332C91CEE1CC900F7D84A /* Wia.h in Headers */,
 				D01867CB4B8071A54A68E1BB78BE2723 /* Pods-Wia_Example-Wia_Tests-umbrella.h in Headers */,
+				4AA332D41CEE1D1800F7D84A /* WiaEvent.h in Headers */,
+				4AA332E01CEE1D3900F7D84A /* WiaUser.h in Headers */,
+				4AA332D51CEE1D1D00F7D84A /* WiaEventFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1674,7 +1750,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA332F71CEE1D6400F7D84A /* WiaUser.m in Sources */,
 				86F6C012918E549AFBF9B9FD31C16FBD /* Pods-Wia_Example-dummy.m in Sources */,
+				4AA332E31CEE1D4400F7D84A /* WiaAccessToken.m in Sources */,
+				4AA332F51CEE1D6100F7D84A /* WiaSensor.m in Sources */,
+				4AA332EB1CEE1D5200F7D84A /* WiaEvent.m in Sources */,
+				4AA332ED1CEE1D5600F7D84A /* WiaEventFile.m in Sources */,
+				4AA332E91CEE1D5000F7D84A /* WiaDeviceApiKeys.m in Sources */,
+				4AA332E51CEE1D4900F7D84A /* WiaClient.m in Sources */,
+				4AA332F31CEE1D5F00F7D84A /* WiaLog.m in Sources */,
+				4AA332E71CEE1D4D00F7D84A /* WiaDevice.m in Sources */,
+				4AA332FA1CEE1D6800F7D84A /* WiaUtils.m in Sources */,
+				4AA332F11CEE1D5C00F7D84A /* WiaLocation.m in Sources */,
+				4AA332EF1CEE1D5800F7D84A /* WiaFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1784,7 +1872,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA332F81CEE1D6400F7D84A /* WiaUser.m in Sources */,
 				35A66891D10E70295192A26BC2C6F4C3 /* Pods-Wia_Example-Wia_Tests-dummy.m in Sources */,
+				4AA332E41CEE1D4400F7D84A /* WiaAccessToken.m in Sources */,
+				4AA332F61CEE1D6200F7D84A /* WiaSensor.m in Sources */,
+				4AA332EC1CEE1D5300F7D84A /* WiaEvent.m in Sources */,
+				4AA332EE1CEE1D5600F7D84A /* WiaEventFile.m in Sources */,
+				4AA332EA1CEE1D5000F7D84A /* WiaDeviceApiKeys.m in Sources */,
+				4AA332E61CEE1D4900F7D84A /* WiaClient.m in Sources */,
+				4AA332F41CEE1D5F00F7D84A /* WiaLog.m in Sources */,
+				4AA332E81CEE1D4D00F7D84A /* WiaDevice.m in Sources */,
+				4AA332FB1CEE1D6900F7D84A /* WiaUtils.m in Sources */,
+				4AA332F21CEE1D5C00F7D84A /* WiaLocation.m in Sources */,
+				4AA332F01CEE1D5A00F7D84A /* WiaFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

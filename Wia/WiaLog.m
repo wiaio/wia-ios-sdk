@@ -28,7 +28,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id copy = [[[self class] alloc] init];
+    WiaLog *copy = [[[self class] alloc] init];
     
     if (copy) {
         [copy setId:self.id];

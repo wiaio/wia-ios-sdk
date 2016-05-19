@@ -840,13 +840,13 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     WiaLogger(@"unsubAckReceived.");
 }
 
-- (void)sending:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
+-(void)sending:(MQTTSession *)session type:(MQTTCommandType)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
     WiaLogger(@"sending.");
     if (data)
         WiaLogger(@"sending data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 }
 
-- (void)received:(MQTTSession *)session type:(int)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
+-(void)received:(MQTTSession *)session type:(MQTTCommandType)type qos:(MQTTQosLevel)qos retained:(BOOL)retained duped:(BOOL)duped mid:(UInt16)mid data:(NSData *)data {
     WiaLogger(@"received.");
     if (data)
         WiaLogger(@"received data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);

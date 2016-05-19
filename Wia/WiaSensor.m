@@ -29,7 +29,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id copy = [[[self class] alloc] init];
+    WiaSensor *copy = [[[self class] alloc] init];
     
     if (copy) {
         [copy setId:self.id];

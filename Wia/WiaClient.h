@@ -6,8 +6,6 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-#import "MQTTClient.h"
 #import "WiaClient.h"
 #import "WiaDevice.h"
 #import "WiaEvent.h"
@@ -19,6 +17,7 @@
 #import "WiaDeviceApiKeys.h"
 #import "WiaFunction.h"
 #import "WiaSensor.h"
+@import MQTTClient;
 
 @protocol WiaClientDelegate <NSObject>
 
