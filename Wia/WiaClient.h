@@ -48,7 +48,7 @@
 @property (nonatomic, readwrite, nullable) NSString *mqttApiPort;
 @property (nonatomic, readwrite) BOOL mqttApiSecure;
 
-@property (nonatomic, strong, nullable) MQTTCFSocketTransport *mqttTransport;
+@property (nonatomic, strong, nullable) MQTTTransport *mqttTransport;
 @property (nonatomic, strong, nullable) MQTTSession *mqttSession;
 
 @property (nonatomic, strong, nullable) NSDictionary *clientInfo;

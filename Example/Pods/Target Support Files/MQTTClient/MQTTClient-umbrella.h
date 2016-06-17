@@ -19,6 +19,7 @@
 #import "MQTTSSLSecurityPolicyEncoder.h"
 #import "MQTTSSLSecurityPolicyTransport.h"
 #import "MQTTTransport.h"
+#import "MQTTWebsocketTransport.h"
 
 FOUNDATION_EXPORT double MQTTClientVersionNumber;
 FOUNDATION_EXPORT const unsigned char MQTTClientVersionString[];

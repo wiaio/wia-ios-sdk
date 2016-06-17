@@ -118,19 +118,26 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
 
 // Stream
 -(void)connectToStream {
+    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+
     if (!self.mqttTransport) {
-        self.mqttTransport = [[MQTTCFSocketTransport alloc] init];
+        if ([self.mqttApiProtocol isEqualToString:@"mqtt"] || [self.mqttApiProtocol isEqualToString:@"mqtts"]) {
+            self.mqttTransport = [[MQTTCFSocketTransport alloc] init];
+            ((MQTTCFSocketTransport *)self.mqttTransport).host = self.mqttApiHost;
+            ((MQTTCFSocketTransport *)self.mqttTransport).port = [[formatter numberFromString:self.mqttApiPort] unsignedShortValue];
+            ((MQTTCFSocketTransport *)self.mqttTransport).tls = self.mqttApiSecure;
+
+        } else if ([self.mqttApiProtocol isEqualToString:@"ws"] || [self.mqttApiProtocol isEqualToString:@"wss"]) {
+            self.mqttTransport = [[MQTTWebsocketTransport alloc] init];
+            ((MQTTWebsocketTransport *)self.mqttTransport).host = self.mqttApiHost;
+            ((MQTTWebsocketTransport *)self.mqttTransport).port = [[formatter numberFromString:self.mqttApiPort] unsignedShortValue];
+            ((MQTTWebsocketTransport *)self.mqttTransport).tls = self.mqttApiSecure;
+        }
     }
     
     if (!self.mqttSession) {
         self.mqttSession = [[MQTTSession alloc] init];
     }
-    
-    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
-
-    self.mqttTransport.host = self.mqttApiHost;
-    self.mqttTransport.port = [[formatter numberFromString:self.mqttApiPort] unsignedShortValue];
-    self.mqttTransport.tls = self.mqttApiSecure;
     
     [self.mqttSession setTransport:self.mqttTransport];
     [self.mqttSession setDelegate:self];

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Wia"
-  s.version          = "0.2.1"
+  s.version          = "0.2.2"
   s.summary          = "Client SDK for Wia. A real-time API for the Internet of Things."
 
   s.description      = "Client SDK for Wia to allow users to build applications around the platform. We provide a real-time API for the Internet of Things."
@@ -26,7 +26,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Wia/*.{h,m}'
 
   s.dependency 'AFNetworking', '~> 3.1'
-  s.dependency 'MQTTClient', '~> 0.7.7'
-
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.dependency 'MQTTClient', '~> 0.7.8'
+  s.dependency 'MQTTClient/Websocket'
 end
