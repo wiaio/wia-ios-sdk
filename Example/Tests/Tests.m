@@ -18,20 +18,21 @@ SpecBegin(InitialSpecs)
 beforeAll(^{
     [[WiaClient sharedInstance] reset];
     [WiaClient debug:YES];
-    [[WiaClient sharedInstance] setRestApiProtocol:@"http"];
-    [[WiaClient sharedInstance] setRestApiHost:@"localhost"];
-    [[WiaClient sharedInstance] setRestApiPort:@"8081"];
+    NSLog(@"%@", [[NSProcessInfo processInfo] environment]);
+    [[WiaClient sharedInstance] setRestApiProtocol:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_REST_PROTOCOL"]];
+    [[WiaClient sharedInstance] setRestApiHost:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_REST_HOST"]];
+    [[WiaClient sharedInstance] setRestApiPort:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_REST_PORT"]];
     
-    [[WiaClient sharedInstance] setMqttApiProtocol:@"mqtt"];
-    [[WiaClient sharedInstance] setMqttApiHost:@"localhost"];
-    [[WiaClient sharedInstance] setMqttApiPort:@"1883"];
+    [[WiaClient sharedInstance] setMqttApiProtocol:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_STREAM_PROTOCOL"]];
+    [[WiaClient sharedInstance] setMqttApiHost:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_STREAM_HOST"]];
+    [[WiaClient sharedInstance] setMqttApiPort:[[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_STREAM_PORT"]];
     [[WiaClient sharedInstance] setMqttApiSecure:NO];
     
     waitUntil(^(DoneCallback done) {
         [[WiaClient sharedInstance] generateAccessToken:
          @{
-           @"username": @"yh9frZAlX0ApiosL@y6FyH1KNnq7Epkfd.com",
-           @"password": @"password",
+           @"username": [[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_USERNAME"],
+           @"password": [[[NSProcessInfo processInfo] environment] objectForKey:@"WIA_TEST_PASSWORD"],
            @"scope": @"user",
            @"grantType": @"password"
            } success:^(WiaAccessToken * _Nullable accessToken) {
@@ -174,7 +175,7 @@ describe(@"mqtt", ^{
     
     it(@"connect to stream", ^{
         waitUntil(^(DoneCallback done) {
-            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
                 done();
             }];
             [[WiaClient sharedInstance] connectToStream];
@@ -183,10 +184,10 @@ describe(@"mqtt", ^{
     
     it(@"connect and disconnect to stream", ^{
         waitUntil(^(DoneCallback done) {
-            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
                 [[WiaClient sharedInstance] disconnectFromStream];
             }];
-            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamDisconnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
                 done();
             }];
             [[WiaClient sharedInstance] connectToStream];
@@ -240,7 +241,7 @@ describe(@"events", ^{
                              XCTAssertNotNil(apiKeys.secretKey);
                              NSLog(@"Using device key %@", apiKeys.secretKey);
                              [[WiaClient sharedInstance] setSecretKey:apiKeys.secretKey];
-                             [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+                             [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
                                  
                                  double delayInSeconds = 6.0;
                                  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
