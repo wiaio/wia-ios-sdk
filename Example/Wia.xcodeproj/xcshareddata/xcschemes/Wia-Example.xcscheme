@@ -79,6 +79,16 @@
             value = "1883"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WIA_TEST_USERNAME"
+            value = "wiaios@wia.io"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WIA_TEST_PASSWORD"
+            value = "kGrCf5rRQYNs89bW"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
