@@ -459,7 +459,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
 }
 
 // Locations
--(void)publishLocation:(nonnull NSDictionary *)location success:(nullable void (^)(WiaLocation * _Nullable sensor))success
+-(void)publishLocation:(nonnull NSDictionary *)location success:(nullable void (^)(WiaLocation * _Nullable location))success
              failure:(nullable void (^)(NSError * _Nullable error))failure {
     WiaLogger(@"Publishing location - %@", location);
     
@@ -728,7 +728,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     if (self.delegate && [self.delegate respondsToSelector:@selector(connectedToStream)]) {
         [self.delegate connectedToStream];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnected" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnect" object:nil];
 }
 
 - (void)connectionRefused:(MQTTSession *)session error:(NSError *)error {
@@ -736,7 +736,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:error];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionRefused" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamError" object:nil];
 }
 
 - (void)connectionClosed:(MQTTSession *)session {
@@ -744,7 +744,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionClose" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamDisconnect" object:nil];
 }
 
 - (void)connectionError:(MQTTSession *)session error:(NSError *)error {
@@ -752,7 +752,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamConnectionError" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamError" object:nil];
 }
 
 - (void)protocolError:(MQTTSession *)session error:(NSError *)error {
@@ -760,7 +760,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
     if (self.delegate && [self.delegate respondsToSelector:@selector(disconnectedFromStream:)]) {
         [self.delegate disconnectedFromStream:nil];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamProtocolError" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WiaStreamError" object:nil];
 }
 
 - (void)newMessage:(MQTTSession *)session data:(NSData *)data onTopic:(NSString *)topic qos:(MQTTQosLevel)qos retained:(BOOL)retained mid:(unsigned int)mid {
