@@ -8,7 +8,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-  pod 'Wia', '~> 2.2'
+  pod 'Wia', '~> 0.2.2'
 end
 ```
 
