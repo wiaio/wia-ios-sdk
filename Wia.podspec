@@ -26,6 +26,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Wia/*.{h,m}'
 
   s.dependency 'AFNetworking', '~> 3.1'
-  s.dependency 'MQTTClient', '~> 0.7.8'
+  s.dependency 'MQTTClient', '~> 0.8.5'
   s.dependency 'MQTTClient/Websocket'
 end

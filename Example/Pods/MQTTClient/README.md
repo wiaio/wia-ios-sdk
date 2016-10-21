@@ -27,14 +27,31 @@ an Objective-C native MQTT Framework http://mqtt.org
 Use the CocoaPod MQTTClient! 
 
 Add this to your Podfile:
+
 ```
 pod 'MQTTClient'
 ```
+which is a short for
+```
+pod 'MQTTClient/Min'
+pod 'MQTTClient/Manager'
+```
+
+The Manager subspec includes the MQTTSessionManager class.
 
 Additionally add this subspec if you want to use MQTT over Websockets:
+
 ```
 pod 'MQTTClient/Websocket'
 ```
+
+If you want to do your logging with CocoaLumberjack (my suggestion), use
+```
+pod 'MQTTClient/MinL'
+pod 'MQTTClient/ManagerL'
+pod 'MQTTClient/WebsocketL'
+```
+instead.
 
 Or use the dynamic library created in the MQTTFramework target.
 
@@ -47,18 +64,19 @@ Or include the source from here.
 Create a new client and connect to a broker:
 
 ```objective-c
+#import "MQTTClient.h"
 
-\@interface MyDelegate : ... MQTTSessionDelegate>
+\@interface MyDelegate : ... <MQTTSessionDelegate>
 ...
 
         MQTTCFSocketTransport *transport = [[MQTTCFSocketTransport alloc] init];
         transport.host = @"localhost";
         transport.port = 1883;
 
-        session = [[MQTTSession alloc] init];
+        MQTTSession *session = [[MQTTSession alloc] init];
         session.transport = transport;
         
-	session.delegate=self;
+	session.delegate = self;
 
 	[session connectAndWaitTimeout:30];  //this is part of the synchronous API
 

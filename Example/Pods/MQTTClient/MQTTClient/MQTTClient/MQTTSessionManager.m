@@ -237,8 +237,8 @@
             willQos:willQos
      willRetainFlag:willRetainFlag
        withClientId:clientId
-     securityPolicy:nil
-       certificates:nil
+     securityPolicy:securityPolicy
+       certificates:certificates
       protocolLevel:MQTTProtocolVersion311]; // use this level as default, keeps it backwards compatible
 }
 
@@ -403,8 +403,8 @@
             [runLoop addTimer:self.reconnectTimer
                       forMode:NSDefaultRunLoopMode];
 
-            self.state = MQTTSessionManagerStateError;
             self.lastErrorCode = error;
+            self.state = MQTTSessionManagerStateError;
             break;
         }
         default:

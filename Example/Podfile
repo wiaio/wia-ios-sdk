@@ -5,7 +5,7 @@ use_frameworks!
 target 'Wia_Example' do
   pod 'Wia', :path => '../'
   pod 'AFNetworking', '~> 3.1'
-  pod 'MQTTClient', '~> 0.7.7'
+  pod 'MQTTClient', '~> 0.8.5'
   pod 'MQTTClient/Websocket'
 
     target 'Wia_Tests' do

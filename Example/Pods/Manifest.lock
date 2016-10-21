@@ -14,32 +14,29 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - CocoaLumberjack (2.3.0):
-    - CocoaLumberjack/Default (= 2.3.0)
-    - CocoaLumberjack/Extensions (= 2.3.0)
-  - CocoaLumberjack/Core (2.3.0)
-  - CocoaLumberjack/Default (2.3.0):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.3.0):
-    - CocoaLumberjack/Default
   - Expecta (1.0.5)
-  - MQTTClient (0.7.8):
-    - MQTTClient/Core (= 0.7.8)
-  - MQTTClient/Core (0.7.8):
-    - CocoaLumberjack
-  - MQTTClient/Websocket (0.7.8):
-    - MQTTClient/Core
+  - MQTTClient (0.8.5):
+    - MQTTClient/Core (= 0.8.5)
+  - MQTTClient/Core (0.8.5):
+    - MQTTClient/Manager
+    - MQTTClient/Min
+  - MQTTClient/Manager (0.8.5):
+    - MQTTClient/Min
+  - MQTTClient/Min (0.8.5)
+  - MQTTClient/Websocket (0.8.5):
+    - MQTTClient/Min
     - SocketRocket
   - SocketRocket (0.5.1)
   - Specta (1.0.5)
-  - Wia (0.2.1):
+  - Wia (0.3.0):
     - AFNetworking (~> 3.1)
-    - MQTTClient (~> 0.7.7)
+    - MQTTClient (~> 0.8.5)
+    - MQTTClient/Websocket
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1)
   - Expecta
-  - MQTTClient (~> 0.7.7)
+  - MQTTClient (~> 0.8.5)
   - MQTTClient/Websocket
   - Specta
   - Wia (from `../`)
@@ -50,13 +47,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CocoaLumberjack: 97fab7ee5f507fe54445cca7ea80f926729cfd15
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  MQTTClient: be89741654eccf5a57eb62f4ef0fd57e0e19aa17
+  MQTTClient: fca939bcd74aa70af2d8ee35f3e44f258f4e9888
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  Wia: 98047eccabe0015aacd2bf686f57d583edd6ed28
+  Wia: b566bc61a31a455224b2e1041d703c5190ca37ef
 
-PODFILE CHECKSUM: 46da1aba66b247583edde44ba958705af21e166c
+PODFILE CHECKSUM: a5c5c35aaab700e7b46f5610acd24c5e9581ab36
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.1.1
