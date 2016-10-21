@@ -20,26 +20,40 @@
     
     [WiaClient debug:YES];
 //    
-//    [[WiaClient sharedInstance] init];
-//    
-//    [[WiaClient sharedInstance] setDelegate:self];
+//    [[WiaClient sharedInstance] initWithApplicationKey:@""];
+    
+//
+    [[WiaClient sharedInstance] setDelegate:self];
 //
 //    [[WiaClient sharedInstance] setSecretKey:@"secret_key"];
 //    
-//    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnected" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-//        NSLog(@"WiaStreamConnected");
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"WiaStreamConnect");
 //        [NSTimer scheduledTimerWithTimeInterval:1.0
 //                                         target:self
 //                                       selector:@selector(onTick:)
 //                                       userInfo:nil
 //                                        repeats:YES];
-//    }];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-//        NSLog(@"WiaStreamConnectionClose");
-//    }];
-////
-//    [[WiaClient sharedInstance] connectToStream];
+        [[WiaClient sharedInstance] listDevices:@{} success:^(NSArray * _Nullable devices, NSNumber * _Nullable count) {
+            NSLog(@"%@", devices);
+            NSLog(@"%@", count);
+            if (devices && [devices count] > 0) {
+                WiaDevice *device = devices[0];
+                NSLog(@"Subscribing to device: %@", device.id);
+                [[WiaClient sharedInstance] subscribeToEvents:@{
+                                                               @"device": device.id
+                                                               }];
+            }
+        } failure:^(NSError * _Nullable error) {
+            NSLog(@"%@", error);
+        }];
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnectionClose" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"WiaStreamConnectionClose");
+    }];
+
+    [[WiaClient sharedInstance] connectToStream];
 }
 
 -(void)onTick:(NSTimer*)timer

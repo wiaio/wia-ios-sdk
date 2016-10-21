@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WiaLocation.h"
 
 @interface WiaDevice : NSObject
 
@@ -16,6 +17,9 @@
 @property (nonatomic, copy, nullable) NSDate *createdAt;
 @property (nonatomic, copy, nullable) NSDate *updatedAt;
 @property (nonatomic, copy, nullable) NSArray *events;
+@property (nonatomic, copy, nullable) NSArray *sensors;
+@property (nonatomic, copy, nullable) WiaLocation *location;
+@property (nonatomic) BOOL public;
 
 - (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dict;
 

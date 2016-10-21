@@ -91,6 +91,8 @@
 		48684B9AE80D6952C1E7C8C2B3455538 /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = DCEB437FB8F361F53C41E810AA8CC21B /* CocoaLumberjack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48CB882912C38D0667FCD33DB24B9EB2 /* MQTTCoreDataPersistence.h in Headers */ = {isa = PBXBuildFile; fileRef = 46CE39AFDE86EB2CC59BA40766FEB576 /* MQTTCoreDataPersistence.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49D35E2CE5F5E10EA9D97B2C3D58B094 /* MQTTCFSocketEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8AFAEAD24A1E516E7B547FCFDE7285 /* MQTTCFSocketEncoder.m */; settings = {COMPILER_FLAGS = "-DLUMBERJACK -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		4A80C5561DBA1F5C00543F46 /* WiaCustomer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A80C5541DBA1F5C00543F46 /* WiaCustomer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A80C5571DBA1F5C00543F46 /* WiaCustomer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A80C5551DBA1F5C00543F46 /* WiaCustomer.m */; };
 		4BC5591DFF6AC73752510F116834376F /* WiaDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 20869D7816DC5E27FC934EC316AE784E /* WiaDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D099399F94AAD9151493AAD10D4A809 /* EXPMatchers+beGreaterThanOrEqualTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 40FAF9C0396DFEA42704946471058347 /* EXPMatchers+beGreaterThanOrEqualTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D2A59CC4E1FA65A08503EF0ED02D511 /* MQTTSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD3339E3653E0ADFFEE881A28ABC748 /* MQTTSessionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -476,6 +478,8 @@
 		471E8DA4C3A20A89CAC892BF0EB44583 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
 		472C576A6605BB305C428BEB1E2864CC /* SocketRocket.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SocketRocket.xcconfig; sourceTree = "<group>"; };
 		48C9536BDCCAEE4BE30EAEE06B5C2B3E /* EXPMatchers+conformTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+conformTo.m"; path = "Expecta/Matchers/EXPMatchers+conformTo.m"; sourceTree = "<group>"; };
+		4A80C5541DBA1F5C00543F46 /* WiaCustomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiaCustomer.h; sourceTree = "<group>"; };
+		4A80C5551DBA1F5C00543F46 /* WiaCustomer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiaCustomer.m; sourceTree = "<group>"; };
 		4A8AFAEAD24A1E516E7B547FCFDE7285 /* MQTTCFSocketEncoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MQTTCFSocketEncoder.m; path = MQTTClient/MQTTClient/MQTTCFSocketEncoder.m; sourceTree = "<group>"; };
 		4BF70ECB92854E1683DCC0CA36C77148 /* SpectaTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SpectaTypes.h; path = Specta/Specta/SpectaTypes.h; sourceTree = "<group>"; };
 		4C82234971BEBE5FFA208610E2C09E68 /* EXPMatcherHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXPMatcherHelpers.m; path = Expecta/Matchers/EXPMatcherHelpers.m; sourceTree = "<group>"; };
@@ -1139,6 +1143,8 @@
 				AD16B0662EF42E1E36F44F4302934911 /* WiaAccessToken.m */,
 				97CE54AF9B8BEF891BA808A2F45A6FE3 /* WiaClient.h */,
 				42500B09EF76155D9FB7EA4AFFCABDA8 /* WiaClient.m */,
+				4A80C5541DBA1F5C00543F46 /* WiaCustomer.h */,
+				4A80C5551DBA1F5C00543F46 /* WiaCustomer.m */,
 				20869D7816DC5E27FC934EC316AE784E /* WiaDevice.h */,
 				CD5F1B357920403CE958E731AC1101D4 /* WiaDevice.m */,
 				F497569F81FC7100E259CE61C11E0C31 /* WiaDeviceApiKeys.h */,
@@ -1487,6 +1493,7 @@
 				DAD9EAD44973A94BB49429B0E9AD9E9E /* Wia.h in Headers */,
 				893E6BA58D821CFF509FB438DC8C2474 /* WiaAccessToken.h in Headers */,
 				F3CC93D82C189E988BD59C972A8B94B5 /* WiaClient.h in Headers */,
+				4A80C5561DBA1F5C00543F46 /* WiaCustomer.h in Headers */,
 				4BC5591DFF6AC73752510F116834376F /* WiaDevice.h in Headers */,
 				575D2576CC1562EC6E3ED488577E6B35 /* WiaDeviceApiKeys.h in Headers */,
 				DFD32BE239AE29BD8EE5713C33FBD4AA /* WiaEvent.h in Headers */,
@@ -1813,6 +1820,7 @@
 				66E4EB12B8634763A1B13FECFC8E1B22 /* Wia-dummy.m in Sources */,
 				6E30B08B0BA931C94EBB1B23D271ED11 /* WiaAccessToken.m in Sources */,
 				FC51E7FC0DA4A533C147ABFE376213DD /* WiaClient.m in Sources */,
+				4A80C5571DBA1F5C00543F46 /* WiaCustomer.m in Sources */,
 				78BE6CBD3A40CC1063C829F88B11202D /* WiaDevice.m in Sources */,
 				0893EBDF11BCB7D8FE28B87E8B55FCE9 /* WiaDeviceApiKeys.m in Sources */,
 				16745DBEB851C7C474386DEA101D7BF9 /* WiaEvent.m in Sources */,

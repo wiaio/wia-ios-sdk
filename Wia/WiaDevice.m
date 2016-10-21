@@ -8,10 +8,11 @@
 
 #import "WiaDevice.h"
 #import "WiaEvent.h"
+#import "WiaSensor.h"
 
 @implementation WiaDevice
 
-@synthesize id, name, isOnline, createdAt, updatedAt, events;
+@synthesize id, name, isOnline, createdAt, updatedAt, events, public, sensors, location;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -29,6 +30,28 @@
             NSTimeInterval seconds = [[dict objectForKey:@"updatedAt"] doubleValue] / 1000;
             self.updatedAt =  [NSDate dateWithTimeIntervalSince1970:seconds];
         }
+        if ([dict objectForKey:@"public"]) {
+            self.public = [[dict objectForKey:@"public"] boolValue];
+        }
+        if ([dict objectForKey:@"events"]) {
+            NSMutableDictionary *eventsDict = [[NSMutableDictionary alloc] init];
+            for (id key in [dict objectForKey:@"events"]) {
+                WiaEvent *event = [[WiaEvent alloc] initWithDictionary:[[dict objectForKey:@"events"] objectForKey:key]];
+                [eventsDict setValue:event forKey:key];
+            }
+            self.events = eventsDict;
+        }
+        if ([dict objectForKey:@"sensors"]) {
+            NSMutableDictionary *sensorsDict = [[NSMutableDictionary alloc] init];
+            for (id key in [dict objectForKey:@"sensors"]) {
+                WiaSensor *sensor = [[WiaSensor alloc] initWithDictionary:[[dict objectForKey:@"sensors"] objectForKey:key]];
+                [sensorsDict setValue:sensor forKey:key];
+            }
+            self.sensors = sensorsDict;
+        }
+        if ([dict objectForKey:@"location"]) {
+            self.location = [[WiaLocation alloc] initWithDictionary:[dict objectForKey:@"location"]];
+        }
     }
     return self;
 }
@@ -44,6 +67,8 @@
         [copy setCreatedAt:self.createdAt];
         [copy setUpdatedAt:self.updatedAt];
         [copy setEvents:self.events];
+        [copy setSensors:self.sensors];
+        [copy setLocation:self.location];
     }
     
     return copy;

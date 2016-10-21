@@ -17,6 +17,7 @@
 #import "WiaDeviceApiKeys.h"
 #import "WiaFunction.h"
 #import "WiaSensor.h"
+#import "WiaCustomer.h"
 @import MQTTClient;
 
 @protocol WiaClientDelegate <NSObject>
@@ -28,6 +29,7 @@
 - (void)newEvent:(WiaEvent * _Nullable)event;
 - (void)newLog:(WiaLog * _Nullable)log;
 - (void)newLocation:(WiaLocation * _Nullable)location;
+- (void)newSensor:(WiaSensor * _Nullable)sensor;
 
 @end
 
@@ -37,6 +39,7 @@
 
 @property (nonatomic, copy, nullable) NSString *publicKey;
 @property (nonatomic, copy, nullable) NSString *secretKey;
+@property (nonatomic, copy, nullable) NSString *applicationKey;
 
 @property (nonatomic, readwrite, nullable) NSString *restApiProtocol;
 @property (nonatomic, readwrite, nullable) NSString *restApiHost;
@@ -57,6 +60,7 @@
 +(void)debug:(BOOL)showDebugLogs;
 
 -(nonnull instancetype)initWithToken:(nonnull NSString *)token NS_DESIGNATED_INITIALIZER;
+-(nonnull instancetype)initWithApplicationKey:(nonnull NSString *)applicationKey NS_DESIGNATED_INITIALIZER;
 
 -(void)reset;
 
@@ -120,7 +124,11 @@
 -(void)callFunction:(nullable NSDictionary *)params;
 
 // Users
--(void)getUserMe:(nullable void (^)(WiaUser * _Nullable user))success
-            failure:(nullable void (^)(NSError * _Nullable error))failure;
+-(void)retrieveUser:(nonnull NSString *)userId success:(nullable void (^)(WiaUser * _Nullable user))success
+         failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+// Customers
+-(void)retrieveCustomer:(nonnull NSString *)customerId success:(nullable void (^)(WiaCustomer * _Nullable customer))success
+              failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 @end
