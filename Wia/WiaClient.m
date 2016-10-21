@@ -903,7 +903,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
         NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
         
         if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
-            WiaSensor *sensor = [[WiaLog alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            WiaSensor *sensor = [[WiaSensor alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             sensor.device = device;
             [self.delegate newSensor:sensor];
         }

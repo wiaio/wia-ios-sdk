@@ -16,8 +16,8 @@
 @property (nonatomic) BOOL isOnline;
 @property (nonatomic, copy, nullable) NSDate *createdAt;
 @property (nonatomic, copy, nullable) NSDate *updatedAt;
-@property (nonatomic, copy, nullable) NSArray *events;
-@property (nonatomic, copy, nullable) NSArray *sensors;
+@property (nonatomic, copy, nullable) NSDictionary *events;
+@property (nonatomic, copy, nullable) NSDictionary *sensors;
 @property (nonatomic, copy, nullable) WiaLocation *location;
 @property (nonatomic) BOOL public;
 
