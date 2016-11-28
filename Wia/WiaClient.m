@@ -883,7 +883,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
         WiaLogger(@"WiaNewLocation");
         NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newLocation:)]) {
             WiaLocation *location = [[WiaLocation alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             location.device = device;
             [self.delegate newLocation:location];
@@ -902,7 +902,7 @@ static BOOL const DEFAULT_MQTT_API_SECURE = true;
         WiaLogger(@"WiaNewSensor");
         NSString *device = [topic substringWithRange:[match rangeAtIndex:1]];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(newLog:)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(newSensor:)]) {
             WiaSensor *sensor = [[WiaSensor alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             sensor.device = device;
             [self.delegate newSensor:sensor];

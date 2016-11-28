@@ -26,7 +26,7 @@
     [[WiaClient sharedInstance] setDelegate:self];
 //
 //    [[WiaClient sharedInstance] setSecretKey:@"secret_key"];
-//    
+//
     [[NSNotificationCenter defaultCenter] addObserverForName:@"WiaStreamConnect" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"WiaStreamConnect");
 //        [NSTimer scheduledTimerWithTimeInterval:1.0
